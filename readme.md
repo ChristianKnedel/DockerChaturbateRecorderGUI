@@ -20,10 +20,10 @@ $ docker-compose -f dev.yml up
 
 ## Howto
 ### 1.) Copy the channnel url
-![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/master/screens/1.png "Copy the channnel url")
+![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/blob/master/screens/1.png "Copy the channnel url")
 
 ### 2.) add the channel
-![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/master/screens/1.png "add the channel")
+![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/blob/master/screens/2.png "add the channel")
 
 ### 3.) record
-![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/master/screens/1.png "record")
+![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/blob/master/screens/3.png "record")
