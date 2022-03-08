@@ -1,0 +1,1 @@
+from .wishlistItem import WishlistItem

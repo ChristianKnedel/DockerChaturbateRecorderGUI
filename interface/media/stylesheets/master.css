@@ -1,0 +1,77 @@
+html, body {
+    margin:0;
+    padding:0;
+    height: 100%;
+    color: #fff;
+    
+  background: #0c6a93;
+}
+#logo {
+    background: red;
+    left: 0;
+    top: 0;
+    width: 30px;
+    height: 60px;
+}
+#toolbar {
+    background: #f47321;
+    height:60px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+}
+#toolbar button {
+    margin: 10px 5px;
+    height:40px;
+}
+
+
+#wishlist {
+  width: 100%;
+    padding: 70px 0 0 0;
+}
+li {
+    padding: 5px 30px;
+    border-bottom: 1px solid #ccc;
+    font-size: 26px;
+}
+
+
+
+li.recording-false span::after {
+  content: " (OFFLINE)";
+  color: red;
+}
+
+li.recording-true span::after {
+  content: " (RECORDING)";
+  color: greenyellow;
+}
+
+#popup-blocker
+{
+    background: #000;
+    opacity: 0.6;
+    position: fixed;
+    left:0;
+    top: 0;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+}
+#popup
+{
+    background: #fff;
+    position: fixed;
+    left:0;
+    top: 0;
+    z-index: 1000;
+    color: #000;
+}
+#popup form 
+{
+    
+    padding: 10px;
+}

@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>DockerChaturbateRecorderGUI</title>
+        <link rel="stylesheet" href="{% static 'stylesheets/master.css' %}" >
+        <script src="{% static 'javascripts/jquery.js' %}"></script>
+        <script src="{% static 'javascripts/chatrubate-recorder.js' %}"></script>
+
+    </head>
+    <body>
+
+        
+        <div id="toolbar"></div>
+        <ol id="wishlist"></ol>
+        <ol id="videos"></ol>
+                
+                <script>
+                   new recorder('#toolbar', '#wishlist', '#videos')
+                </script>
+    </body>
+</html> 

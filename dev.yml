@@ -1,0 +1,21 @@
+#docker-compose.yml
+version: '2'
+
+services:    
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: recorder_app
+    mem_limit: '256M'
+    restart: always
+    environment:
+      TZ: "Europe/Berlin"
+      HOST_MEDIA: "/Users/christianknedel/NetBeansProjects/chatrubate/src/interface/media/videos/"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./interface/media:/code/media
+    ports:
+      - "127.0.0.1:8002:8000"
+      
+     
