@@ -13,8 +13,7 @@ class Command(BaseCommand):
     containerPrefix = 'cr_'
 
 
-    
-    def handle(self, *args, **options):
+    def stopChannels(self):
 
         deleted_items = WishlistItem.unmanaged_objects.filter(deleted=1).order_by('-prio')
         for item in deleted_items:
@@ -29,9 +28,9 @@ class Command(BaseCommand):
                  stdout=subprocess.PIPE,
                  close_fds=True
             )
+            item.delete()
 
-
-
+    def checkChanels(self):
 
         items = WishlistItem.unmanaged_objects.filter(deleted=0).order_by('-prio')
 
@@ -41,19 +40,13 @@ class Command(BaseCommand):
 
             slug = slugify(item.title)
             containerName = str(self.containerPrefix + 'cr_' + slug)
-          
 
             if containerName in containers:
-
                 item.status = 1
                 item.save()
                 self.stdout.write(self.style.SUCCESS('run  '+ containerName))
                 
-
-
-
             else:
-
                 container = subprocess.Popen(
                     'docker run -u 0 -d --rm -v ' + os.environ['HOST_MEDIA'] + ':/output --name ' + containerName +' chatrubate-recorder /code/recorder.sh -u https://chaturbate.com/' + item.title + '/ &', 
                     shell=True, 
@@ -62,13 +55,12 @@ class Command(BaseCommand):
                 )
 
                 if item.status == 1:
-
                     item.status = 0
                     item.save()
 
-                    
-
-
                 self.stdout.write(self.style.ERROR('dead  '+ containerName))
-   
-            
+
+    def handle(self, *args, **options):
+
+        self.stopChannels()
+        self.checkChanels()
