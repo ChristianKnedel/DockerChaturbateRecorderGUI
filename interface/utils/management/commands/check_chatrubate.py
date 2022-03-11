@@ -24,7 +24,7 @@ class Command(BaseCommand):
           
 
             container = subprocess.Popen(
-                'docker stop ' + containerName +' &', 
+                'docker exec ' + containerName +' pkill -int ffmpeg &', 
                  shell=True, 
                  stdout=subprocess.PIPE,
                  close_fds=True
