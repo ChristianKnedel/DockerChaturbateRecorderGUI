@@ -8,6 +8,8 @@ I create a new directory called “chaturbate-recorder” on my server:
 ```
 $ mkdir chaturbate-recorder
 $ cd chaturbate-recorder
+$ mkdir interface/media/videos/
+$ chmod 755 -R interface/media/videos/
 ```
 
 After that I go to the docker-registry directory and download the "DockerChaturbateRecorderGUI"
