@@ -11,7 +11,9 @@ services:
     restart: always
     environment:
       TZ: "Europe/Berlin"
-      HOST_MEDIA: "/Users/CharlieScene/NetBeansProjects/chatrubate/src/interface/media/videos/"
+      HOST_MEDIA: "/Users/CharlieScene/NetBeansProjects/chatrubate/media/videos/"
+      MAXIMUM_FOLDER_GB: 2
+      MAXIMUM_DOCKER_CONTAINER: 10
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./interface/media:/code/media

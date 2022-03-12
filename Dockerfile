@@ -1,6 +1,9 @@
 FROM ubuntu:latest
 
+ENV MAXIMUM_FOLDER_GB=4   
+ENV MAXIMUM_DOCKER_CONTAINER=10
 ENV TZ 'Europe/Berlin'
+
 RUN echo $TZ > /etc/timezone && \
 apt-get update && apt-get install -y tzdata && \
 rm /etc/localtime && \
@@ -11,8 +14,7 @@ RUN apt-get update -y && apt-get install --fix-missing -f -y \
 python3 \
 python3-pip \
 gettext \
-cron \
-ffmpeg
+cron
 
 #install docker
 RUN curl -fsSL https://get.docker.com | sh
