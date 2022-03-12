@@ -4,6 +4,26 @@ ChaturbateRecorder records any video stream from Chaturbate
 
 
 ## Install
+I create a new directory called “chaturbate-recorder” on my server: 
+```
+$ mkdir chaturbate-recorder
+$ cd chaturbate-recorder
+```
+
+After that I go to the docker-registry directory and download the "DockerChaturbateRecorderGUI"
+```
+$ wget https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/archive/refs/heads/master.zip
+$ unzip master.zip 
+$ rm -rf DockerChaturbateRecorderGUI-master/ master.zip
+```
+
+for synology disk stations:
+```
+$ wget https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/archive/refs/heads/master.zip
+$ /bin/7z x master.zip on synology disk stations
+$ rm -rf DockerChaturbateRecorderGUI-master/ master.zip
+```
+
 ### 1.) build recoder
 ```
 $ docker build -t chatrubate-recorder ./recorder/
@@ -19,7 +39,9 @@ $ docker-compose -f dev.yml build
 
 ### 3.) directory path
 Change the 'HOST_MEDIA'-path in dev.yml
-
+```
+$ echo "please change the value of HOST_MEDIA in the dev.yml file at line 14 to '$(pwd)/interface/media/video/'"
+```
 ### 4.) start the container
 ```
 $ docker-compose -f dev.yml up
