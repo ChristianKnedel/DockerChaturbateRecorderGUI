@@ -44,7 +44,7 @@ $ echo "please change the value of HOST_MEDIA in the dev.yml file at line 14 to 
 ```
 ### 4.) start the container
 ```
-$ docker-compose -f dev.yml up
+$ docker-compose -f dev.yml up -d
 ```
 
 ## Howto
