@@ -59,6 +59,8 @@ $ echo "please change the value of HOST_MEDIA in the dev.yml file at line 14 to 
 ```
 $ docker-compose -f dev.yml up -d
 ```
+After that I can call my recoder server with the IP of the server / diskstation and the assigned port 8002. Great! 
+![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/blob/master/screens/3.png "record")
 
 ## Howto
 ### 1.) Copy the channnel url
