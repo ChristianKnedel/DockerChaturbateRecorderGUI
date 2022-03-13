@@ -4,12 +4,17 @@ const popup = function(url='/wishlist/add', width=500, height=500)
     this.height = height;
     this.url = url;
     
-    this.blocker = jQuery('<div id="popup-blocker"></div>');
+    this.blocker = jQuery('<div id="popup-blocker"></div>').on( "click", this.hide.bind(this));
     this.popup = jQuery('<div id="popup"></div>');
     
     jQuery( window ).resize(this.resize.bind(this));
     this.show(url);
     this.resize()
+}
+popup.prototype.hide = function()
+{
+    jQuery(this.blocker).remove();
+    jQuery(this.popup).remove();
 }
 popup.prototype.show = function(url)
 {
