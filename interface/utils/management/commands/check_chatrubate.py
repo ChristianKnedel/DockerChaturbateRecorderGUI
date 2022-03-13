@@ -9,7 +9,6 @@ from django.template.defaultfilters import slugify
 from models.wishlistItem import WishlistItem
 
 class Command(BaseCommand):
-    help = 'import Catlogue'
     containerPrefix = 'cr_'
 
     def stopAllChannels(self):
@@ -37,7 +36,7 @@ class Command(BaseCommand):
         for item in deleted_items:
             slug = slugify(item.title)
             containerName = str(self.containerPrefix + 'cr_' + slug)
-            self.self.stopContainer(containerName)
+            self.stopContainer(containerName)
             item.delete()
 
     def checkChanels(self):
@@ -97,3 +96,4 @@ class Command(BaseCommand):
             self.checkChanels()
 
         self.deletedChannels()
+
