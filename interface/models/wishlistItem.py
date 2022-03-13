@@ -23,6 +23,24 @@ class WishlistItem(models.Model):
       ('t', 'TRANS')
     )
 
+    REGION = (
+      ('all', 'ALL'),
+      ('north-american', 'North American Cams'),
+      ('other-region', 'Other Region Cams'),
+      ('euro-russian', 'Euro Russian Cams '),
+      ('asian', 'Asian Cams'),
+      ('south-american', 'South American Cams')
+    )
+
+    AGE = (
+      ('all', 'ALL'),
+      ('teen', 'Teen Cams (18+)'),
+      ('18to21', '18 to 21 Cams'),
+      ('20to30', '20 to 30 Cams'),
+      ('30to50', '30 to 50 Cams'),
+      ('mature', 'Mature Cams (50+)')
+    )
+
     PRIO = (
       (1, 1),
       (2, 2),
@@ -38,8 +56,12 @@ class WishlistItem(models.Model):
 
     title = models.CharField(db_index=True, unique=True, max_length=255)
     gender = models.CharField(max_length=1, choices=GENDER, default='a')
+    age = models.CharField(max_length=10, choices=AGE, default='all')
+    region = models.CharField(max_length=100, choices=REGION, default='all')
     type = models.CharField(max_length=1, choices=TYPE, default='c')
     prio = models.IntegerField(choices=PRIO, default=1)
+    hd = models.BooleanField(default=False, blank=False)
+
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
     deleted = models.BooleanField(default=False, blank=False)
