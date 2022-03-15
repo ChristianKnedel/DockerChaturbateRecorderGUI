@@ -14,30 +14,32 @@ ChaturbateRecorder records any video stream from Chaturbate
 
 
 
-## Install
-I create a new directory called “chaturbate-recorder” on my server: 
+## Initial Setup
+Find or make a directory you want your videos saved to then run: 
 ```
-$ mkdir chaturbate-recorder
-$ cd chaturbate-recorder
-$ mkdir interface/media/videos/
-$ chmod 755 -R interface/media/videos/
+$ mkdir videos
+$ chmod 755 -R videos
 ```
+Save the full directory from above for later
 
+## Install
 After that I go to the docker-registry directory and download the "DockerChaturbateRecorderGUI"
+
+It is suggested that you go and make a temp directory somewhere else before you start.
 ```
 $ wget https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/archive/refs/heads/master.zip
 $ unzip master.zip 
-$ rm -rf DockerChaturbateRecorderGUI-master/ master.zip
+$ cd DockerChaturbateRecorderGUI-master
 ```
 
 for synology disk stations:
 ```
 $ wget https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/archive/refs/heads/master.zip
-$ /bin/7z x master.zip on synology disk stations
-$ rm -rf DockerChaturbateRecorderGUI-master/ master.zip
+$ /bin/7z x master.zip
+$ cd DockerChaturbateRecorderGUI-master
 ```
 
-### 1.) build recoder
+### 1.) build recorder
 ```
 $ docker build -t chatrubate-recorder ./recorder/
 ```
@@ -51,10 +53,8 @@ $ docker-compose -f dev.yml build
 ```
 
 ### 3.) directory path
-Change the 'HOST_MEDIA'-path in dev.yml
-```
-$ echo "please change the value of HOST_MEDIA in the dev.yml file at line 14 to '$(pwd)/interface/media/video/'"
-```
+Change the 'HOST_MEDIA'-path in dev.yml with the directory you got set at the start.
+
 ### 4.) start the container
 ```
 $ docker-compose -f dev.yml up -d

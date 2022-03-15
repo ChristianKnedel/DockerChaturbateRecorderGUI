@@ -128,7 +128,7 @@ recorder.prototype.renderWishlist = function(data)
         const itemObj = jQuery(
           '<li class="recording-' + data[ item ].status + '">'
         ).html(
-          '<span>' + data[ item ].title + '<a href="/wishlist/delete/' + data[ item ].id + '/">delete</a></span>'
+          '<span>' + data[ item ].title + ' <a href="/wishlist/delete/' + data[ item ].id + '/">delete</a></span>'
         )
 
         jQuery(this.wishlist).append(itemObj);
