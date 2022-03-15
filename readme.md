@@ -24,6 +24,7 @@ Save the full directory from above for later
 
 ## Install
 After that I go to the docker-registry directory and download the "DockerChaturbateRecorderGUI"
+
 It is suggested that you go and make a temp directory somewhere else before you start.
 ```
 $ wget https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/archive/refs/heads/master.zip
