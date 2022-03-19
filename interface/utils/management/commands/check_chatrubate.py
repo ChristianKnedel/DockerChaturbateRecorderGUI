@@ -49,25 +49,23 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('checkFilter'))
         containers = self.getContainer()
 
-        if len(containers) >= int(os.environ['MAXIMUM_DOCKER_CONTAINER']):
-            self.stdout.write(self.style.SUCCESS('maximum containers is reached'))
-         
-        else:
-            items = WishlistItem.unmanaged_objects.filter(type='c', deleted=0).order_by('-prio')
-            self.stdout.write(self.style.SUCCESS(str(len(items))))
+        items = WishlistItem.unmanaged_objects.filter(type='c', deleted=0).order_by('-prio')
+        self.stdout.write(self.style.SUCCESS(str(len(items))))
 
-            for item in items:
+        for item in items:
 
-                slug = slugify(item.title)
-                containerName = str(self.containerPrefix + 'cr_' + slug)
-                self.stdout.write(self.style.SUCCESS('check  '+ containerName))
+            slug = slugify(item.title)
+            containerName = str(self.containerPrefix + 'cr_' + slug)
+            self.stdout.write(self.style.SUCCESS('check  '+ containerName))
 
-                if containerName in containers:
-                    item.status = 1
-                    item.save()
-                    self.stdout.write(self.style.SUCCESS('run  '+ containerName))
+            if containerName in containers:
+                item.status = 1
+                item.save()
+                self.stdout.write(self.style.SUCCESS('run  '+ containerName))
 
-                else:
+            else:
+                if len(containers) < int(os.environ['MAXIMUM_DOCKER_CONTAINER']):
+
                     container = subprocess.Popen(
                         'docker run -u 0 -d --rm -v ' + os.environ['ABSOLUTE_HOST_MEDIA'] + ':/output --name ' + containerName +' chatrubate-recorder /code/recorder.sh -u https://chaturbate.com/' + item.title + '/ &', 
                         shell=True, 
@@ -79,7 +77,7 @@ class Command(BaseCommand):
                         item.status = 0
                         item.save()
 
-                    self.stdout.write(self.style.ERROR('dead  '+ containerName))
+                self.stdout.write(self.style.ERROR('dead  '+ containerName))
 
     def du(self, path):
         """disk usage in human readable format (e.g. '2,1GB')"""
