@@ -69,7 +69,7 @@ class Command(BaseCommand):
 
                 else:
                     container = subprocess.Popen(
-                        'docker run -u 0 -d --rm -v ' + os.environ['HOST_MEDIA'] + ':/output --name ' + containerName +' chatrubate-recorder /code/recorder.sh -u https://chaturbate.com/' + item.title + '/ &', 
+                        'docker run -u 0 -d --rm -v ' + os.environ['ABSOLUTE_HOST_MEDIA'] + ':/output --name ' + containerName +' chatrubate-recorder /code/recorder.sh -u https://chaturbate.com/' + item.title + '/ &', 
                         shell=True, 
                         stdout=subprocess.PIPE,
                         close_fds=True
@@ -172,4 +172,3 @@ class Command(BaseCommand):
         self.deletedChannels()
         self.checkFilter()
         self.deleteFilter()
-
