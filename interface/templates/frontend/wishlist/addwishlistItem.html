@@ -1,14 +1,137 @@
+<div id="formset-newitem">
 
-{% if form.subject.errors %}
-    <ol>
-    {% for error in form.subject.errors %}
-        <li><strong>{{ error|escape }}</strong></li>
-    {% endfor %}
-    </ol>
-{% endif %}
 
-<form action="/wishlist/add" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-</form>
+    <form action="/wishlist/add" method="post">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field.errors }}
+            {{ hidden_field }}
+        {% endfor %}
+
+      
+        {% for field in form.visible_fields %}
+            <div class="fromrow">
+                
+                <div class="col-25">
+                    {{ field.label_tag }}
+                </div>
+                <div class="col-75">
+                    {{ field.errors }}
+                    {{ field }}
+                    {{ field.help_text }}
+                </div>
+                <br>
+            </div>
+        {% endfor %}
+        <br>
+        <button type="submit">Submit</button>
+        
+    </form>
+</div>
+
+
+
+<style>
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+</style>
+<script>
+    
+    
+ var changeTypeLabel = function() {
+  if( jQuery( "#id_type" ).val() == 'f' ) 
+  {
+      jQuery('label[for="id_title"]').text('Tag');
+  }
+  else
+  {
+      jQuery('label[for="id_title"]').text('Channel-Title');
+  }
+};
+jQuery( "#id_type" ).change(changeTypeLabel);   
+changeTypeLabel();
+
+jQuery( "#id_title" ).keyup(
+    function() 
+    {
+        if( jQuery('#id_title').val().length >= 1 )
+        {
+            jQuery( "#id_region" ).val( "all");
+            jQuery( "label[for='id_region']" ).closest('.fromrow').hide();
+            jQuery( "#id_age" ).val( "all" );
+            jQuery( "label[for='id_age']" ).closest('.fromrow').hide();
+            jQuery( "label[for='id_gender']" ).closest('.fromrow').hide();
+
+        }
+        else
+        {
+            jQuery( "label[for='id_region']" ).closest('.fromrow').show();
+            jQuery( "label[for='id_age']" ).closest('.fromrow').show();
+            jQuery( "label[for='id_gender']" ).closest('.fromrow').show();
+            
+        }
+    }
+);
+
+jQuery( "#id_region" ).change(
+    function() 
+    {
+        
+        if( jQuery('#id_region').val() != 'all' )
+        {
+            jQuery( "#id_type" ).val('f');
+            jQuery( "label[for='id_title']" ).closest('.fromrow').hide();
+            
+            jQuery( "#id_title" ).val( jQuery( "label[for='id_region']" ).text() + ' ' + jQuery('#id_region').val() );
+            
+            jQuery( "#id_age" ).val( "all" );
+            jQuery( "label[for='id_age']" ).closest('.fromrow').hide();
+
+        }
+        else
+        {
+            jQuery( "#id_title" ).val( "");
+            jQuery( "label[for='id_title']" ).closest('.fromrow').show();
+            jQuery( "label[for='id_age']" ).closest('.fromrow').show();
+            
+        }       
+        
+
+    }
+);
+
+jQuery( "#id_age" ).change(
+    function() 
+    {
+         if( jQuery('#id_age').val() != 'all' )
+        {
+            jQuery( "#id_type" ).val('f');
+            jQuery( "#id_title" ).val( jQuery( "label[for='id_age']" ).text() + ' ' + jQuery('#id_age').val() );
+            jQuery( "label[for='id_title']" ).closest('.fromrow').hide();
+            jQuery( "#id_region" ).val( "all" );
+            jQuery( "label[for='id_region']" ).closest('.fromrow').hide();
+
+        }
+        else
+        {
+            jQuery( "#id_title" ).val( "");
+            jQuery( "label[for='id_title']" ).closest('.fromrow').show();
+            jQuery( "label[for='id_region']" ).closest('.fromrow').show();
+            
+        }           
+        
+    }
+);
+</script>

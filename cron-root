@@ -1,1 +1,1 @@
-*/1 * * * * root /code/cron.sh > /proc/1/fd/1 2>/proc/1/fd/2
+*/1 * * * * /code/cron.sh > /proc/1/fd/1 2>/proc/1/fd/2

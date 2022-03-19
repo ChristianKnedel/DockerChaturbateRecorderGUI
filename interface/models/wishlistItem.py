@@ -54,13 +54,12 @@ class WishlistItem(models.Model):
     )
 
 
+    type = models.CharField(max_length=1, choices=TYPE, default='c')
     title = models.CharField(db_index=True, unique=True, max_length=255)
     gender = models.CharField(max_length=1, choices=GENDER, default='a')
     age = models.CharField(max_length=10, choices=AGE, default='all')
     region = models.CharField(max_length=100, choices=REGION, default='all')
-    type = models.CharField(max_length=1, choices=TYPE, default='c')
     prio = models.IntegerField(choices=PRIO, default=1)
-    hd = models.BooleanField(default=False, blank=False)
 
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)

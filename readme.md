@@ -5,9 +5,8 @@ ChaturbateRecorder records any video stream from Chaturbate
   * automatically record Chaturbate live streams
 * streams and folder size limis 
 * stream/channel priority
-* coming soon
-  * stream finder 
-    * automatically search for streams
+* stream finder 
+  * automatically search for streams
 
 
 ![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/blob/master/screens/3.png "record")

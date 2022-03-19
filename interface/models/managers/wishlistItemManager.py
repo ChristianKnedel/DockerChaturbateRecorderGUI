@@ -8,7 +8,7 @@ class WishlistItemManager(models.Manager):
 
 
     def getAll(self):
-        return self.filter(deleted=0).order_by('-prio').values('id', 'title', 'prio', 'type', 'gender', 'status', 'updated_at')
+        return self.filter(deleted=0).order_by('-type','-prio').values('id', 'title', 'prio', 'type', 'gender', 'status', 'updated_at')
 
 
     def getByID(self, id):

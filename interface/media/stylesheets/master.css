@@ -4,7 +4,7 @@ html, body {
     height: 100%;
     color: #fff;
     
-  background: #0c6a93;
+    background: #191919;
 }
 #logo {
     background: red;
@@ -14,7 +14,7 @@ html, body {
     height: 60px;
 }
 #toolbar {
-    background: #f47321;
+    background: #ffd600;
     height:60px;
     width: 100%;
     position: fixed;
@@ -22,32 +22,67 @@ html, body {
     left: 0;
     
 }
-#toolbar button {
-    margin: 10px 5px;
+#popup form button,
+#toolbar button{
     height:40px;
+    background: #0f0f0f;
+    padding: 0 10px;
+    margin: 5px 10px;
+    color: #ccc;
+    font-weight: bold;
+    text-decoration: none;
+    border-color: #0f0f0f;
+
+    line-height: 32px;
+    border-radius: 6px;
+  
+}
+#toolbar button:hover {
+    color: #fff;
+    background: #FF0000;
+  
 }
 
 
 #wishlist {
-  width: 100%;
-    padding: 70px 0 0 0;
+    width: 100%;
+    padding: 60px 0 0 0;
 }
 li {
-    padding: 5px 30px;
+    padding: 0 10px;
     border-bottom: 1px solid #ccc;
     font-size: 26px;
+    line-height: 40px;
+    text-transform: uppercase;
+}
+li a {
+    float: right;
+    color: #ffd600;
+    text-decoration: none;
+
+    line-height: 40px;
+  
+}
+
+li a:hover {
+    color: #FF0000;
+  
+}
+li.type-f-recording-false {
+    font-weight: bold;
+    color: #ffd600;
+    background: #0f0f0f;
 }
 
 
-
-li.recording-false span::after {
-  content: " (OFFLINE)";
-  color: red;
+li.type-c-recording-false span::after {
+    content: " (OFFLINE)";
+    color: red;
 }
 
-li.recording-true span::after {
-  content: " (RECORDING)";
-  color: greenyellow;
+li.type-c-recording-true span::after {
+    content: " (RECORDING)";
+    color: greenyellow;
 }
 
 #popup-blocker
@@ -63,15 +98,43 @@ li.recording-true span::after {
 }
 #popup
 {
-    background: #fff;
     position: fixed;
     left:0;
     top: 0;
     z-index: 1000;
     color: #000;
 }
+#popup h1 {
+    background: #ffd600;
+    margin: 0;
+    padding: 5px 10px;
+    font-size: 18px;
+    line-height: 20px;
+}
+#popup h1 span{
+    background: #000;
+    line-height: 20px;
+    padding: 0 5px;
+    color: #fff;
+    cursor: pointer;
+    float: right;
+}
+#popup .inner {
+    border: 1px solid #ffd600;
+    background: #fff;
+    font-size: 18px;
+}
+#popup form .fromrow 
+{
+    border-bottom: 1px solid #ccc;
+    line-height: 30px;
+    padding: 12px;
+}
 #popup form 
 {
     
     padding: 10px;
+}
+br {
+    clear: both;
 }
