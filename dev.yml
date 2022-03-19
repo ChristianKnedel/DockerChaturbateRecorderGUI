@@ -17,5 +17,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /Users/CharlieScene/videos:/code/media/videos
+      - /Users/CharlieScene/videos:/code/database
     ports:
       - "8002:8000"
