@@ -1,5 +1,6 @@
 # docker ChaturbateRecorder
-ChaturbateRecorder records any video stream from Chaturbate
+Download Chaturbate video stream with  DockerChaturbateRecorderGUI! Try it out..
+
 ## Features
 * watchlist/wishlist
   * automatically record Chaturbate live streams
@@ -63,7 +64,7 @@ After that I can call my recoder server with the IP of the server / diskstation 
 
 ## Howto
 ### 1.) Copy the channnel url
-copy the channel name / slug
+To download video from chaturbate, no special tech knowledge is required. The process starts with chaturbate page link. Copy that link or channel name from the browser's address bar, then paste it into the white box above. And hit "Submit".
 ![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/blob/master/screens/1.png "Copy the channnel url")
 
 ### 2.) add the channel

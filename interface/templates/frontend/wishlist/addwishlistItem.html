@@ -85,6 +85,24 @@ jQuery( "#id_title" ).keyup(
     }
 );
 
+const checkChannelVal = function() 
+{
+    const url = jQuery('#id_title').val();
+    if (jQuery( "#id_type" ).val() === 'c' && url.substr(0, 5) === 'https')
+    {
+        const urlParts = url.split('/');
+        if (urlParts.length === 5 && urlParts[4] === '')
+        {
+            jQuery('#id_title').val(urlParts[3]);
+        }
+    }
+};
+
+jQuery( "#id_title" ).change(checkChannelVal);
+jQuery( "#id_title" ).mouseup(checkChannelVal);
+jQuery( "#id_title" ).keyup(checkChannelVal);
+
+
 jQuery( "#id_region" ).change(
     function() 
     {
@@ -134,4 +152,5 @@ jQuery( "#id_age" ).change(
         
     }
 );
+
 </script>
