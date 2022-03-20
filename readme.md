@@ -53,7 +53,7 @@ $ docker-compose -f dev.yml build
 ```
 
 ### 3.) directory path
-Change the 'HOST_MEDIA'-path in dev.yml with the directory you got set at the start.
+Change the 'ABSOLUTE_HOST_MEDIA'-path in dev.yml with the directory you got set at the start.
 
 ### 4.) start the container
 ```
