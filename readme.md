@@ -9,7 +9,7 @@ Download Chaturbate video stream with  DockerChaturbateRecorderGUI! Try it out..
 * stream finder 
   * automatically search for streams
 * coming soon
-  * kubernetes control
+  * kubernetes cluster control
 
 
 ![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/blob/master/screens/3.png "record")
