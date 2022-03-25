@@ -4,10 +4,12 @@ Download Chaturbate video stream with  DockerChaturbateRecorderGUI! Try it out..
 ## Features
 * watchlist/wishlist
   * automatically record Chaturbate live streams
-* streams and folder size limis 
+* streams and folder size limits 
 * stream/channel priority
 * stream finder 
   * automatically search for streams
+* coming soon
+  * kubernetes control
 
 
 ![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/blob/master/screens/3.png "record")
