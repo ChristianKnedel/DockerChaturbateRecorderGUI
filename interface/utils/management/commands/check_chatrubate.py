@@ -64,18 +64,19 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS('run  '+ containerName))
 
             else:
-                if len(containers) < int(os.environ['MAXIMUM_DOCKER_CONTAINER']):
+                if int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']) != 0 and len(containers) < int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']):
+                    break
 
-                    container = subprocess.Popen(
-                        'docker run -u 0 -d --rm -v ' + os.environ['ABSOLUTE_HOST_MEDIA'] + ':/output --name ' + containerName +' chatrubate-recorder /code/recorder.sh -u https://chaturbate.com/' + item.title + '/ &', 
-                        shell=True, 
-                        stdout=subprocess.PIPE,
-                        close_fds=True
-                    )
+                container = subprocess.Popen(
+                    'docker run -u 0 -d --rm -v ' + os.environ['ABSOLUTE_HOST_MEDIA'] + ':/output --name ' + containerName +' chatrubate-recorder /code/recorder.sh -u https://chaturbate.com/' + item.title + '/ &', 
+                    shell=True, 
+                    stdout=subprocess.PIPE,
+                    close_fds=True
+                )
 
-                    if item.status == 1:
-                        item.status = 0
-                        item.save()
+                if item.status == 1:
+                    item.status = 0
+                    item.save()
 
                 self.stdout.write(self.style.ERROR('dead  '+ containerName))
 
@@ -87,8 +88,11 @@ class Command(BaseCommand):
     def checkFilter(self):
         self.stdout.write(self.style.SUCCESS('checkFilter'))
         containers = self.getContainer()
+        delta = 1024
 
-        delta = int(os.environ['MAXIMUM_DOCKER_CONTAINER']) - len(containers)
+        if int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']) != 0: 
+            delta = int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']) - len(containers)
+
         self.stdout.write(self.style.ERROR('delta  '+ str(delta)))
 
         if delta == 0:
@@ -159,7 +163,7 @@ class Command(BaseCommand):
         videoDir = os.path.join(PROJECT_ROOT, '../../../media/videos')
 
         containers = str(self.du(videoDir))
-        if int(self.du(videoDir)) > ( int(os.environ['MAXIMUM_FOLDER_GB']) +11 * 1024 * 1024):
+        if int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']) != 0 and int(self.du(videoDir)) > ( int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']) +11 * 1024 * 1024):
             self.stdout.write(self.style.SUCCESS('maximum size is reached'))
             self.stopAllChannels()
 
