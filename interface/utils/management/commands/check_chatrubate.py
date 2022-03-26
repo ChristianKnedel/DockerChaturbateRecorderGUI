@@ -64,7 +64,7 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS('run  '+ containerName))
 
             else:
-                if int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']) != 0 and len(containers) < int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']):
+                if int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']) != 0 and len(containers) > int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']):
                     break
 
                 container = subprocess.Popen(
