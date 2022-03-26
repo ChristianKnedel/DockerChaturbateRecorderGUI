@@ -91,7 +91,7 @@ const checkChannelVal = function()
     if (jQuery( "#id_type" ).val() === 'c' && url.substr(0, 5) === 'https')
     {
         const urlParts = url.split('/');
-        if (urlParts.length === 5 && urlParts[4] === '')
+        if (urlParts.length === 5)
         {
             jQuery('#id_title').val(urlParts[3]);
         }

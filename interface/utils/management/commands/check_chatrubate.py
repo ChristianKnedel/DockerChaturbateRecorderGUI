@@ -99,11 +99,6 @@ class Command(BaseCommand):
 
                 self.stdout.write(self.style.ERROR('dead  '+ containerName))
 
-    def du(self, path):
-        """disk usage in human readable format (e.g. '2,1GB')"""
-        return subprocess.check_output(['du','-s', path]).split()[0].decode('utf-8')
-        
-
     def checkFilter(self):
         self.stdout.write(self.style.SUCCESS('checkFilter'))
         containers = self.getContainer()
@@ -180,8 +175,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
         videoDir = os.path.join(PROJECT_ROOT, '../../../media/videos')
-
-        containers = str(self.du(videoDir))
 
         self.stdout.write(self.style.SUCCESS('ok'))
         self.checkChannels()

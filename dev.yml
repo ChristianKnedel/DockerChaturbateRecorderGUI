@@ -15,7 +15,7 @@ services:
       LIMIT_MAXIMUM_DOCKER_CONTAINER: 10 #or "0" to disable this limit
       COMMAND_ADAPTER: 'DockerAdapter' #For Kubernetes 'KubernetesAdapter'
       CONTAINER_PREFFIX: 'cr_'
-    volumes: 
+    volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /Users/CharlieScene/videos:/code/database
     ports:
