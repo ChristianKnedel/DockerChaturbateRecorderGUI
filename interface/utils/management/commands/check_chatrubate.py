@@ -85,7 +85,8 @@ class Command(BaseCommand):
                     self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).startInstance(
                         os.environ['ABSOLUTE_HOST_MEDIA'], 
                         containerName, 
-                        item.title
+                        item.title,
+                        int(os.environ['LIMIT_MAXIMUM_FOLDER_GB'])
                     ),
                     shell=True, 
                     stdout=subprocess.PIPE,
@@ -181,13 +182,9 @@ class Command(BaseCommand):
         videoDir = os.path.join(PROJECT_ROOT, '../../../media/videos')
 
         containers = str(self.du(videoDir))
-        if int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']) != 0 and int(self.du(videoDir)) > ( int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']) +11 * 1024 * 1024):
-            self.stdout.write(self.style.SUCCESS('maximum size is reached'))
-            self.stopAllChannels()
 
-        else:
-            self.stdout.write(self.style.SUCCESS('ok'))
-            self.checkChannels()
+        self.stdout.write(self.style.SUCCESS('ok'))
+        self.checkChannels()
 
         self.deletedChannels()
         self.checkFilter()
