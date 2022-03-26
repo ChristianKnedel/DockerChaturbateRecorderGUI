@@ -1,6 +1,8 @@
 #base
 from django.core.management.base import BaseCommand, CommandError
 
+from utils.adapter.adapter_factory import AdapterFactory
+
 #utils
 import os, subprocess
 import re
@@ -10,22 +12,27 @@ from django.template.defaultfilters import slugify
 from models.wishlistItem import WishlistItem
 
 class Command(BaseCommand):
-    containerPrefix = 'cr_'
+    containerPrefix = os.environ['CONTAINER_PREFFIX']
+    adapter_factory = AdapterFactory()
 
     def stopAllChannels(self):
         self.stdout.write(self.style.SUCCESS('stopAllChannels'))
         items = WishlistItem.unmanaged_objects.filter(type='c', status=1)
         for item in items:
             slug = slugify(item.title)
-            containerName = str(self.containerPrefix + 'cr_' + slug)
+            containerName = str(self.containerPrefix + slug)
             item.status = 0
             item.save()
             self.stopContainer(containerName)
+
+
+
         
     def stopContainer(self, containerName):
         self.stdout.write(self.style.SUCCESS('stop  '+ containerName))
+
         return subprocess.Popen(
-            'docker exec ' + containerName +' pkill -int ffmpeg &', 
+            self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).stopInstance(containerName), 
             shell=True, 
             stdout=subprocess.PIPE,
             close_fds=True
@@ -36,12 +43,16 @@ class Command(BaseCommand):
         deleted_items = WishlistItem.unmanaged_objects.filter(type='c', deleted=1).order_by('-prio')
         for item in deleted_items:
             slug = slugify(item.title)
-            containerName = str(self.containerPrefix + 'cr_' + slug)
+            containerName = str(self.containerPrefix + slug)
             self.stopContainer(containerName)
             item.delete()
 
     def getContainer(self):
-        containers = subprocess.run("docker container ls --format '{{.Names}}' | grep 'cr_'", shell=True, stdout=subprocess.PIPE).stdout.decode().splitlines()
+        containers = subprocess.run(
+            self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).getInstances(self.containerPrefix), 
+            shell=True, 
+            stdout=subprocess.PIPE
+        ).stdout.decode().splitlines()
         return containers
 
 
@@ -49,26 +60,33 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('checkFilter'))
         containers = self.getContainer()
 
+        self.stdout.write(self.style.SUCCESS(str(containers)))
+
         items = WishlistItem.unmanaged_objects.filter(type='c', deleted=0).order_by('-prio')
         self.stdout.write(self.style.SUCCESS(str(len(items))))
 
         for item in items:
 
             slug = slugify(item.title)
-            containerName = str(self.containerPrefix + 'cr_' + slug)
+            containerName = str(self.containerPrefix + slug)
             self.stdout.write(self.style.SUCCESS('check  '+ containerName))
 
             if containerName in containers:
                 item.status = 1
                 item.save()
-                self.stdout.write(self.style.SUCCESS('run  '+ containerName))
+                self.stdout.write(self.style.SUCCESS('run ' + containerName))
 
             else:
                 if int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']) != 0 and len(containers) > int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']):
+                    self.stdout.write(self.style.SUCCESS('break'))
                     break
 
                 container = subprocess.Popen(
-                    'docker run -u 0 -d --rm -v ' + os.environ['ABSOLUTE_HOST_MEDIA'] + ':/output --name ' + containerName +' chatrubate-recorder /code/recorder.sh -u https://chaturbate.com/' + item.title + '/ &', 
+                    self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).startInstance(
+                        os.environ['ABSOLUTE_HOST_MEDIA'], 
+                        containerName, 
+                        item.title
+                    ),
                     shell=True, 
                     stdout=subprocess.PIPE,
                     close_fds=True
