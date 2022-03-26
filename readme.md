@@ -78,3 +78,7 @@ Click on '+' and add the channel name as title
 
 ## Contributing
 We welcome your contributions! Please refer to our contributing policies prior to submitting pull requests.
+Below is the list of awesome people supporting the development of DockerChaturbateRecorderGUI. 
+You can also become one of them. [terrorist-squad](https://www.patreon.com/terrorist_squad)
+- [Dethkiller15](https://github.com/Dethkiller15)
+- [Nor882](https://github.com/Nor882)
