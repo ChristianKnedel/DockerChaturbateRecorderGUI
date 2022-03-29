@@ -3,9 +3,7 @@ version: '2'
 
 services:    
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: chrisknedel/chatrubate-recorder-gui
     container_name: recorder_app
     restart: always
     environment:
@@ -15,6 +13,7 @@ services:
       LIMIT_MAXIMUM_DOCKER_CONTAINER: 10 #or "0" to disable this limit
       COMMAND_ADAPTER: 'DockerAdapter' #For Kubernetes 'KubernetesAdapter'
       CONTAINER_PREFFIX: 'cr_'
+      RECORDER_IMAGE: 'chrisknedel/chatrubate-recorder'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /Users/CharlieScene/videos:/code/database

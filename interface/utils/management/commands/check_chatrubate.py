@@ -86,7 +86,8 @@ class Command(BaseCommand):
                         os.environ['ABSOLUTE_HOST_MEDIA'], 
                         containerName, 
                         item.title,
-                        int(os.environ['LIMIT_MAXIMUM_FOLDER_GB'])
+                        int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']),
+                        os.environ['RECORDER_IMAGE']
                     ),
                     shell=True, 
                     stdout=subprocess.PIPE,
