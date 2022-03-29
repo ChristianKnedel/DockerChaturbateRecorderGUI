@@ -14,9 +14,36 @@ Download Chaturbate video stream with  DockerChaturbateRecorderGUI! Try it out..
 
 ![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/blob/master/screens/3.png "record")
 
+## run 
+```
+$ docker run -it --rm -v /Users/christianknedel/videos:/code/database -v /var/run/docker.sock:/var/run/docker.sock -p 8002:8000 -e TZ="Europe/Berlin" -e ABSOLUTE_HOST_MEDIA="/Users/christianknedel/videos/" -e LIMIT_MAXIMUM_FOLDER_GB=20 -e LIMIT_MAXIMUM_DOCKER_CONTAINER=10 -e COMMAND_ADAPTER='DockerAdapter' -e CONTAINER_PREFFIX='cr_' -e RECORDER_IMAGE='chrisknedel/chatrubate-recorder' chrisknedel/chatrubate-recorder-gui
+```
+Example stack.yml for DockerChaturbateRecorderGUI:
+```
+version: '2'
 
+services:    
+  app:
+    image: chrisknedel/chatrubate-recorder-gui
+    container_name: recorder_app
+    restart: always
+    environment:
+      TZ: "Europe/Berlin"
+      ABSOLUTE_HOST_MEDIA: "/Users/christianknedel/videos/"
+      LIMIT_MAXIMUM_FOLDER_GB: 20 #or "0" to disable this limit
+      LIMIT_MAXIMUM_DOCKER_CONTAINER: 10 #or "0" to disable this limit
+      COMMAND_ADAPTER: 'DockerAdapter' #For Kubernetes 'KubernetesAdapter'
+      CONTAINER_PREFFIX: 'cr_'
+      RECORDER_IMAGE: 'chrisknedel/chatrubate-recorder'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /Users/christianknedel/videos:/code/database
+    ports:
+      - "8002:8000"
+```
 
-## Initial Setup
+## build from source
+### Initial Setup
 Find or make a directory you want your videos saved to then run: 
 ```
 $ mkdir videos
@@ -24,7 +51,7 @@ $ chmod 755 -R videos
 ```
 Save the full directory from above for later
 
-## Install
+### Install
 After that I go to the docker-registry directory and download the "DockerChaturbateRecorderGUI"
 
 It is suggested that you go and make a temp directory somewhere else before you start.
@@ -41,7 +68,7 @@ $ /bin/7z x master.zip
 $ cd DockerChaturbateRecorderGUI-master
 ```
 
-### 1.) build recorder
+#### 1.) build recorder
 ```
 $ docker build -t chatrubate-recorder ./recorder/
 ```
@@ -49,15 +76,15 @@ If you prefer to use only the command line, then this call will help you:
 ``docker run -it -v /Users/CharlieScene/docker/chatrubate/input:/output chatrubate-recorder /code/recorder.sh -u https://chaturbate.com/triple_crystal/``
 
 
-### 2.) build web app
+#### 2.) build web app
 ```
 $ docker-compose -f dev.yml build
 ```
 
-### 3.) directory path
+#### 3.) directory path
 Change the 'ABSOLUTE_HOST_MEDIA'-path in dev.yml with the directory you got set at the start.
 
-### 4.) start the container
+#### 4.) start the container
 ```
 $ docker-compose -f dev.yml up -d
 ```
