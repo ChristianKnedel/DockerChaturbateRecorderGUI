@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>ChaturbateRecorder</Name>
+  <Repository>chrisknedel/chatrubate-recorder-gui</Repository>
+  <Registry>https://hub.docker.com/r/chrisknedel/chatrubate-recorder-gui</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/terrorist-squad/DockerChaturbateRecorderGUI</Support>
+  <Project>https://github.com/terrorist-squad/DockerChaturbateRecorderGUI</Project>
+  <Overview/>
+  <Category>MediaApp:Video</Category>
+  <WebUI>http://[IP]:[PORT:8002]/</WebUI>
+  <TemplateURL/>
+  <Icon>https://avatars.githubusercontent.com/u/100994062?s=48&amp;amp;v=4</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled>1649007371</DateInstalled>
+  <DonateText/>
+  <DonateLink/>
+  <Description/>
+  <Networking>
+    <Mode>bridge</Mode>
+    <Publish>
+      <Port>
+        <HostPort>8002</HostPort>
+        <ContainerPort>8000</ContainerPort>
+        <Protocol>tcp</Protocol>
+      </Port>
+    </Publish>
+  </Networking>
+  <Data>
+    <Volume>
+      <HostDir>/mnt/user/Recorder/</HostDir>
+      <ContainerDir>/code/database</ContainerDir>
+      <Mode>rw</Mode>
+    </Volume>
+    <Volume>
+      <HostDir>/var/run/docker.sock</HostDir>
+      <ContainerDir>/var/run/docker.sock</ContainerDir>
+      <Mode>ro</Mode>
+    </Volume>
+  </Data>
+  <Environment>
+    <Variable>
+      <Value>America/New_York</Value>
+      <Name>TZ</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>60</Value>
+      <Name>LIMIT_MAXIMUM_FOLDER_GB</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>20</Value>
+      <Name>LIMIT_MAXIMUM_DOCKER_CONTAINER</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>DockerAdapter</Value>
+      <Name>COMMAND_ADAPTER</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>/mnt/user/Recorder</Value>
+      <Name>ABSOLUTE_HOST_MEDIA</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>chrisknedel/chatrubate-recorder</Value>
+      <Name>RECORDER_IMAGE</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>cr_</Value>
+      <Name>CONTAINER_PREFFIX</Name>
+      <Mode/>
+    </Variable>
+  </Environment>
+  <Labels/>
+  <Config Name="Video Save Mount Point" Target="/code/database" Default="/mnt/user/Recorder/" Mode="rw" Description="Where the videos are stored" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/Recorder/</Config>
+  <Config Name="Timezone" Target="TZ" Default="America/New_York" Mode="" Description="See https://www.php.net/manual/en/timezones.php for values." Type="Variable" Display="always" Required="true" Mask="false">America/New_York</Config>
+  <Config Name="Max Folder Size (in GB)" Target="LIMIT_MAXIMUM_FOLDER_GB" Default="60" Mode="" Description="Set to 0 to disable the limit." Type="Variable" Display="always" Required="true" Mask="false">60</Config>
+  <Config Name="Max Number of Recording Dockers" Target="LIMIT_MAXIMUM_DOCKER_CONTAINER" Default="20" Mode="" Description="For each model, a new recoding docker is launched to record, then destroyed when completed. Set to 0 to disable the limit. " Type="Variable" Display="always" Required="true" Mask="false">20</Config>
+  <Config Name="COMMAND_ADAPTER" Target="COMMAND_ADAPTER" Default="DockerAdapter" Mode="" Description="For Kubernetes 'KubernetesAdapter'" Type="Variable" Display="always" Required="true" Mask="false">DockerAdapter</Config>
+  <Config Name="Host Port 1" Target="8000" Default="8002" Mode="tcp" Description="Container Port: 8002" Type="Port" Display="always" Required="true" Mask="false">8002</Config>
+  <Config Name="Video Save Path" Target="ABSOLUTE_HOST_MEDIA" Default="/mnt/user/Recorder" Mode="" Description="This MUST match the mount point, or else the recording will not work. This will be updated in the future to reflect changes." Type="Variable" Display="always" Required="true" Mask="false">/mnt/user/Recorder</Config>
+  <Config Name="docker.sock Path" Target="/var/run/docker.sock" Default="/var/run/docker.sock" Mode="ro" Description="Container Path: /var/run/docker.sock" Type="Path" Display="advanced" Required="true" Mask="false">/var/run/docker.sock</Config>
+  <Config Name="RECORDER_IMAGE" Target="RECORDER_IMAGE" Default="chrisknedel/chatrubate-recorder" Mode="" Description="Container Variable: RECORDER_IMAGE" Type="Variable" Display="advanced" Required="true" Mask="false">chrisknedel/chatrubate-recorder</Config>
+  <Config Name="CONTAINER_PREFFIX" Target="CONTAINER_PREFFIX" Default="cr_" Mode="" Description="Container Variable: CONTAINER_PREFFIX" Type="Variable" Display="advanced" Required="true" Mask="false">cr_</Config>
+</Container>
