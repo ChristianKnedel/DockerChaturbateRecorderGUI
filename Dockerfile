@@ -3,6 +3,8 @@ FROM ubuntu:latest
 ENV MAXIMUM_FOLDER_GB=4   
 ENV MAXIMUM_DOCKER_CONTAINER=10
 ENV TZ 'Europe/Berlin'
+ENV UID 0
+ENV GID 0
 
 RUN echo $TZ > /etc/timezone && \
 apt-get update && apt-get install -y tzdata && \
@@ -28,9 +30,12 @@ ADD ./interface/ /code/
 RUN pip3 install -r /code/requirements.txt
 
 #rights and user
+RUN useradd -ms /bin/bash recorder
 WORKDIR /code
+RUN chown -R recorder:recorder /code/
 RUN chmod 755 /code/docker-entrypoint.sh
 RUN chmod 755 /code/cron.sh
+
 
 #cleanup
 RUN apt-get clean
@@ -48,4 +53,4 @@ RUN chmod 0644 /etc/cron.d/cron &&\
 #ports
 EXPOSE 8000
 
-CMD cron && /code/docker-entrypoint.sh
+CMD cron && su recorder -c "/code/docker-entrypoint.sh"
