@@ -15,6 +15,10 @@ do
     esac
 done
 
+
+usermod -u $UID recorder
+groupmod -g $GID recorder
+
 if [ -z "$url" ]
 then
       echo "\$Incorrect URL!"
@@ -29,4 +33,4 @@ SLUG=$(echo "${NAME}" | iconv -t ascii//TRANSLIT | sed -r s/[^a-zA-Z0-9]+/-/g | 
 PLAYLIST_URL=$(echo "${OUTPUT}" | grep m3u8 | grep -o -P '(?<=https://).*.m3u8')
 CLEAN_PLAYLIST_URL=$(echo "${PLAYLIST_URL}" | sed "s/\\\u002D/-/g")
 [ ! -d "/output/${SLUG}" ] && mkdir -p "/output/${SLUG}"
-ffmpeg -i "https://${CLEAN_PLAYLIST_URL}" -c copy -bsf:a aac_adtstoasc  "/output/${SLUG}/${SLUG}-${TIMESTAMP}.mp4"
+su recorder -c "ffmpeg -i https://${CLEAN_PLAYLIST_URL} -c copy -bsf:a aac_adtstoasc  /output/${SLUG}/${SLUG}-${TIMESTAMP}.mp4"
