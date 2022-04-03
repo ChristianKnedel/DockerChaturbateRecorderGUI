@@ -1,14 +1,15 @@
-#docker-compose.yml
 version: '2'
 
 services:    
   app:
-    image: chrisknedel/chatrubate-recorder-gui
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: recorder_app
     restart: always
     environment:
       TZ: "Europe/Berlin"
-      ABSOLUTE_HOST_MEDIA: "/Users/CharlieScene/videos/"
+      ABSOLUTE_HOST_MEDIA: "/Users/christianknedel/videos/"
       LIMIT_MAXIMUM_FOLDER_GB: 20 #or "0" to disable this limit
       LIMIT_MAXIMUM_DOCKER_CONTAINER: 10 #or "0" to disable this limit
       COMMAND_ADAPTER: 'DockerAdapter' #For Kubernetes 'KubernetesAdapter'
@@ -16,6 +17,6 @@ services:
       RECORDER_IMAGE: 'chrisknedel/chatrubate-recorder'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /Users/CharlieScene/videos:/code/database
+      - /Users/christianknedel/videos:/code/database
     ports:
       - "8002:8000"
