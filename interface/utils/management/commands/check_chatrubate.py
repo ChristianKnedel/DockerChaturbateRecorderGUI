@@ -16,7 +16,6 @@ class Command(BaseCommand):
     adapter_factory = AdapterFactory()
 
     def stopAllChannels(self):
-        self.stdout.write(self.style.SUCCESS('stopAllChannels'))
         items = WishlistItem.unmanaged_objects.filter(type='c', status=1)
         for item in items:
             slug = slugify(item.title)
@@ -29,7 +28,6 @@ class Command(BaseCommand):
 
         
     def stopContainer(self, containerName):
-        self.stdout.write(self.style.SUCCESS('stop  '+ containerName))
 
         return subprocess.Popen(
             self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).stopInstance(containerName), 
@@ -39,7 +37,6 @@ class Command(BaseCommand):
         )
 
     def deletedChannels(self):
-        self.stdout.write(self.style.SUCCESS('deletedChannels'))
         deleted_items = WishlistItem.unmanaged_objects.filter(type='c', deleted=1).order_by('-prio')
         for item in deleted_items:
             slug = slugify(item.title)
@@ -57,28 +54,21 @@ class Command(BaseCommand):
 
 
     def checkChannels(self):
-        self.stdout.write(self.style.SUCCESS('checkFilter'))
         containers = self.getContainer()
 
-        self.stdout.write(self.style.SUCCESS(str(containers)))
-
         items = WishlistItem.unmanaged_objects.filter(type='c', deleted=0).order_by('-prio')
-        self.stdout.write(self.style.SUCCESS(str(len(items))))
 
         for item in items:
 
             slug = slugify(item.title)
             containerName = str(self.containerPrefix + slug)
-            self.stdout.write(self.style.SUCCESS('check  '+ containerName))
 
             if containerName in containers:
                 item.status = 1
                 item.save()
-                self.stdout.write(self.style.SUCCESS('run ' + containerName))
 
             else:
                 if int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']) != 0 and len(containers) > int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']):
-                    self.stdout.write(self.style.SUCCESS('break'))
                     break
 
                 container = subprocess.Popen(
@@ -87,7 +77,9 @@ class Command(BaseCommand):
                         containerName, 
                         item.title,
                         int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']),
-                        os.environ['RECORDER_IMAGE']
+                        os.environ['RECORDER_IMAGE'],
+                        os.environ['USER_UID'],
+                        os.environ['USER_GID']
                     ),
                     shell=True, 
                     stdout=subprocess.PIPE,
@@ -98,17 +90,12 @@ class Command(BaseCommand):
                     item.status = 0
                     item.save()
 
-                self.stdout.write(self.style.ERROR('dead  '+ containerName))
-
     def checkFilter(self):
-        self.stdout.write(self.style.SUCCESS('checkFilter'))
         containers = self.getContainer()
         delta = 1024
 
         if int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']) != 0: 
             delta = int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']) - len(containers)
-
-        self.stdout.write(self.style.ERROR('delta  '+ str(delta)))
 
         if delta == 0:
             return False
@@ -116,10 +103,6 @@ class Command(BaseCommand):
         items = WishlistItem.unmanaged_objects.filter(type='f', deleted=0).order_by('-prio')
             
         for item in items:
-
-            self.stdout.write(self.style.SUCCESS('title' + item.title))
-            self.stdout.write(self.style.SUCCESS('age' + item.age))
-
             url = 'https://chaturbate.com/'
 
             if item.age != 'all':
@@ -156,9 +139,6 @@ class Command(BaseCommand):
             ).stdout.decode()
 
             for channel in re.findall(r'(?<=<a href="/)[^/"]*', channels):
-                self.stdout.write(self.style.SUCCESS( 'create wishlist item ' + channel))
-
-
                 if delta == 0:
                     return False
 
@@ -177,7 +157,6 @@ class Command(BaseCommand):
         PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
         videoDir = os.path.join(PROJECT_ROOT, '../../../media/videos')
 
-        self.stdout.write(self.style.SUCCESS('ok'))
         self.checkChannels()
 
         self.deletedChannels()
