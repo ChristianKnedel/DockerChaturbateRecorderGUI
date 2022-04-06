@@ -3,8 +3,8 @@ FROM ubuntu:latest
 ENV MAXIMUM_FOLDER_GB=4   
 ENV MAXIMUM_DOCKER_CONTAINER=10
 ENV TZ 'Europe/Berlin'
-ENV UID 0
-ENV GID 0
+ENV USER_UID 0
+ENV USER_GID 0
 
 RUN echo $TZ > /etc/timezone && \
 apt-get update && apt-get install -y tzdata && \

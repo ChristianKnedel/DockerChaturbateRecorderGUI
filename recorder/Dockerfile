@@ -2,6 +2,8 @@ FROM ubuntu:latest
 
 ENV MAXIMUM_FOLDER_KB=1048576
 ENV TZ 'Europe/Berlin'
+ENV UID 0
+ENV GID 0
 
 RUN echo $TZ > /etc/timezone && \
 apt-get update && apt-get install -y tzdata && \
