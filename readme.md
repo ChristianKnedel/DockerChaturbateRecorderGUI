@@ -112,3 +112,4 @@ Below is the list of awesome people supporting the development of DockerChaturba
 You can also become one of them. [terrorist-squad](https://www.patreon.com/terrorist_squad)
 - [Dethkiller15](https://github.com/Dethkiller15)
 - [Nor882](https://github.com/Nor882)
+- [meddle99](https://github.com/meddle99)
