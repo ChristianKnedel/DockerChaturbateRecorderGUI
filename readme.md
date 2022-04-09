@@ -36,7 +36,7 @@ services:
       COMMAND_ADAPTER: 'DockerAdapter' #For Kubernetes 'KubernetesAdapter'
       CONTAINER_PREFFIX: 'cr_'
       RECORDER_IMAGE: 'chrisknedel/chatrubate-recorder'
-      USER_ID: 0
+      USER_UID: 0
       USER_GID: 0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
