@@ -33,5 +33,5 @@ SLUG=$(echo "${NAME}" | iconv -t ascii//TRANSLIT | sed -r s/[^a-zA-Z0-9]+/-/g | 
 
 PLAYLIST_URL=$(echo "${OUTPUT}" | grep m3u8  | sed "s/\\\u002D/-/g" | grep -o 'https://[a-zA-Z0-9.+-_:/]*.m3u8')
 [ ! -d "/output/${SLUG}" ] && mkdir -p "/output/${SLUG}"
-e
+chown -R recorder:recorder "/output/${SLUG}"
 su recorder -c "ffmpeg -i ${PLAYLIST_URL} -c copy -bsf:a aac_adtstoasc  /output/${SLUG}/${SLUG}-${TIMESTAMP}.mp4"
