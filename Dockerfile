@@ -54,4 +54,4 @@ RUN chmod 0644 /etc/cron.d/cron &&\
 #ports
 EXPOSE 8000
 
-CMD cron && su recorder -c "/code/docker-entrypoint.sh"
+CMD cron && /code/docker-entrypoint.sh
