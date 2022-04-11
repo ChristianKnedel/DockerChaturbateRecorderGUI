@@ -31,8 +31,8 @@ services:
     environment:
       TZ: "Europe/Berlin"
       ABSOLUTE_HOST_MEDIA: "/Users/christianknedel/videos/"
-      LIMIT_MAXIMUM_FOLDER_GB: 20 #or "0" to disable this limit
-      LIMIT_MAXIMUM_DOCKER_CONTAINER: 10 #or "0" to disable this limit
+      MAXIMUM_FOLDER_GB: 20 #or "0" to disable this limit
+      MAXIMUM_DOCKER_CONTAINER: 10 #or "0" to disable this limit
       COMMAND_ADAPTER: 'DockerAdapter' #For Kubernetes 'KubernetesAdapter'
       CONTAINER_PREFFIX: 'cr_'
       RECORDER_IMAGE: 'chrisknedel/chatrubate-recorder'
