@@ -76,7 +76,7 @@ $ cd DockerChaturbateRecorderGUI-master
 $ docker build -t chatrubate-recorder ./recorder/
 ```
 If you prefer to use only the command line, then this call will help you:
-``docker run -it -v /Users/CharlieScene/docker/chatrubate/input:/output chatrubate-recorder /code/recorder.sh -u https://chaturbate.com/triple_crystal/``
+``docker run -it -v /Users/CharlieScene/docker/chatrubate/input:/code/videos/ chatrubate-recorder /code/recorder.sh -u https://chaturbate.com/triple_crystal/``
 
 
 #### 2.) build web app
