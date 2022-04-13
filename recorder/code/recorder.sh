@@ -1,7 +1,6 @@
 #!/bin/bash
 export LANG=C.UTF-8
-cron
-SIZE=$(du -sk /output/ | cut -f1)
+SIZE=$(du -sk /code/videos/ | cut -f1)
 
 if [[ $SIZE -gt $MAXIMUM_FOLDER_KB ]]; then
     echo 'maximum size is reached'
@@ -9,10 +8,10 @@ if [[ $SIZE -gt $MAXIMUM_FOLDER_KB ]]; then
     exit -1
 fi
 
-while getopts u: flag
+while getopts c: flag
 do
     case "${flag}" in
-        u) url=${OPTARG};;
+        c) channel=${OPTARG};;
     esac
 done
 
@@ -20,18 +19,18 @@ done
 usermod -u $UID recorder
 groupmod -g $GID recorder
 
-if [ -z "$url" ]
+if [ -z "$channel" ]
 then
-      echo "\$Incorrect URL!"
+      echo "\$Incorrect channel name!"
 fi
 
 TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
-OUTPUT=$(curl "${url}")
+OUTPUT=$(curl --referer "https://chaturbate.com" -s "https://chaturbate.com/api/chatvideocontext/${channel}/")
 
-NAME=$(echo "${OUTPUT}}" | grep 'og:title' | grep -E "Watch (.*?) live on Chaturbate!" | sed 's/.*Watch\s\(.*\)\slive\son\sChaturbate.*/\1/')
+NAME=$(echo "${OUTPUT}" | eq ".broadcaster_username" )
 SLUG=$(echo "${NAME}" | iconv -t ascii//TRANSLIT | sed -r s/[^a-zA-Z0-9]+/-/g | sed -r s/^-+\|-+$//g | tr A-Z a-z)
+PLAYLIST_URL=$(echo "${OUTPUT}" | eq ".hls_source")
 
-PLAYLIST_URL=$(echo "${OUTPUT}" | grep m3u8  | sed "s/\\\u002D/-/g" | grep -o 'https://[a-zA-Z0-9.+-_:/]*.m3u8')
-[ ! -d "/output/${SLUG}" ] && mkdir -p "/output/${SLUG}"
-chown -R recorder:recorder "/output/${SLUG}"
-su recorder -c "ffmpeg -i ${PLAYLIST_URL} -c copy -bsf:a aac_adtstoasc  /output/${SLUG}/${SLUG}-${TIMESTAMP}.mp4"
+[ ! -d "/code/videos/${SLUG}" ] && mkdir -p "/code/videos/${SLUG}"
+chown -R recorder:recorder "/code/videos/${SLUG}"
+su recorder -c "ffmpeg -i ${PLAYLIST_URL} -c copy -bsf:a aac_adtstoasc /code/videos/${SLUG}/${SLUG}-${TIMESTAMP}.mp4" > /proc/1/fd/1 2>/proc/1/fd/2
