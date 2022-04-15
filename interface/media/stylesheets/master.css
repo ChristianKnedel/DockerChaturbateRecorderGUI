@@ -121,7 +121,7 @@ li.type-c-recording-true span::after {
 }
 #popup .inner {
     border: 1px solid #ffd600;
-    background: #fff;
+    background: #000;
     font-size: 18px;
 }
 #popup form .fromrow 
