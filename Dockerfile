@@ -1,10 +1,12 @@
 FROM ubuntu:latest
-
+ENV CONTAINER_PREFFIX='cr_' 
 ENV MAXIMUM_FOLDER_GB=4   
 ENV MAXIMUM_DOCKER_CONTAINER=10
 ENV TZ 'Europe/Berlin'
 ENV USER_UID 0
 ENV USER_GID 0
+ENV ABSOLUTE_HOST_MEDIA '/code/videos/'
+ENV RECORDER_IMAGE 'chatrubate-recorder:v2'
 
 RUN echo $TZ > /etc/timezone && \
 apt-get update && apt-get install -y tzdata && \
@@ -16,7 +18,8 @@ RUN apt-get update -y && apt-get install --fix-missing -f -y \
 python3 \
 python3-pip \
 gettext \
-cron
+cron \
+ffmpeg
 
 #install docker
 RUN curl -fsSL https://get.docker.com | sh
@@ -25,6 +28,7 @@ RUN usermod -aG docker www-data
 #app folder
 RUN mkdir /code/
 ADD ./interface/ /code/
+ADD ./recorder/code/ /recorder/
 
 # Install dependencies
 RUN pip3 install -r /code/requirements.txt

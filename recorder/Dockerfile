@@ -1,6 +1,7 @@
 FROM ubuntu:latest
 
-ENV MAXIMUM_FOLDER_KB=1048576
+
+ENV MAXIMUM_FOLDER_GB=4
 ENV TZ 'Europe/Berlin'
 ENV UID 0
 ENV GID 0
@@ -42,4 +43,4 @@ RUN chmod 0644 /etc/cron.d/cron &&\
  crontab -u root /etc/cron.d/cron &&\
  touch /var/log/cron.log
 
-CMD /code/recorder.sh
+CMD usermod -u $UID recorder && groupmod -g $GID recorder && su recorder "/code/recorder.sh"

@@ -36,8 +36,12 @@ class Command(BaseCommand):
         
     def stopContainer(self, containerName):
         logger.debug('call stopContainer ' + containerName)
+
+        command = self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).stopInstance(containerName)
+        logger.debug('- call command ' + command)
+
         return subprocess.Popen(
-            self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).stopInstance(containerName), 
+            command, 
             shell=True, 
             stdout=subprocess.PIPE,
             close_fds=True
@@ -52,10 +56,14 @@ class Command(BaseCommand):
             self.stopContainer(containerName)
             item.delete()
 
-    def getContainer(self):
-        logger.debug('call getContainer')
+    def getInstances(self):
+        logger.debug('call getInstances')
+
+        command = self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).getInstances(self.containerPrefix)
+        logger.debug('- call command ' + command)
+
         containers = subprocess.run(
-            self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).getInstances(self.containerPrefix), 
+            command, 
             shell=True, 
             stdout=subprocess.PIPE
         ).stdout.decode().splitlines()
@@ -64,7 +72,7 @@ class Command(BaseCommand):
 
     def checkChannels(self):
         logger.debug('call checkChannels')
-        containers = self.getContainer()
+        containers = self.getInstances()
 
         items = WishlistItem.unmanaged_objects.filter(type='c', deleted=0).order_by('-prio')
 
@@ -81,7 +89,7 @@ class Command(BaseCommand):
 
             else:
                 logger.debug('- status dead')
-                if int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']) != 0 and len(containers) > int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']):
+                if int(os.environ['LIMIT_MAXIMUM_DOWNLOADS']) != 0 and len(containers) > int(os.environ['LIMIT_MAXIMUM_DOWNLOADS']):
                     break
 
                 command = self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).startInstance(
@@ -109,11 +117,11 @@ class Command(BaseCommand):
 
     def checkFilter(self):
         logger.debug('call checkFilter')
-        containers = self.getContainer()
+        containers = self.getInstances()
         delta = 1024
 
-        if int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']) != 0: 
-            delta = int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']) - len(containers)
+        if int(os.environ['LIMIT_MAXIMUM_DOWNLOADS']) != 0: 
+            delta = int(os.environ['LIMIT_MAXIMUM_DOWNLOADS']) - len(containers)
 
         if delta == 0:
             return False

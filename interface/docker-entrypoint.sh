@@ -15,4 +15,9 @@ echo "-> compilemessages"
 
 echo "-> starte server "
 chown -R recorder:recorder /code/
+
+for variable_value in $(cat /proc/1/environ | sed 's/\x00/\n/g'); do
+   echo "export $variable_value" >> /etc/profile
+done
+
 su recorder -c "python3 manage.py runserver 0.0.0.0:8000"

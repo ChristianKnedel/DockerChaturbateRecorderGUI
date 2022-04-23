@@ -1,0 +1,25 @@
+#docker-compose.yml
+version: '2'
+
+services:    
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: recorder_app
+    restart: always
+    environment:
+      TZ: "Europe/Berlin"
+      LIMIT_MAXIMUM_FOLDER_GB: 20 #or "0" to disable this limit
+      LIMIT_MAXIMUM_DOWNLOADS: 10 #or "0" to disable this limit
+      COMMAND_ADAPTER: 'ShellAdapter' #For Kubernetes 'KubernetesAdapter'
+      CONTAINER_PREFFIX: 'cr_'
+      RECORDER_IMAGE: 'chatrubate-recorder'
+      USER_ID: 0
+      USER_GID: 0
+    volumes:
+      - /Users/christianknedel/videos:/code/database
+      - ./interface/logs:/code/logs
+      - /Users/christianknedel/videos:/code/videos
+    ports:
+      - "8002:8000"

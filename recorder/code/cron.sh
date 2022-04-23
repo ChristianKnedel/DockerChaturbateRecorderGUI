@@ -5,12 +5,7 @@ done
 
 SIZE=$(du -sk /output/ | cut -f1)
 
-echo "----- DEBUUG ------"
-echo $SIZE
-echo $MAXIMUM_FOLDER_KB
-
-
-if [[ $SIZE -gt $MAXIMUM_FOLDER_KB ]]; then
+if [[ $SIZE -gt 0 ]] && [[ $SIZE -gt $(($MAXIMUM_FOLDER_GB * 1024 * 1024)) ]]; then
     echo 'maximum size is reached'
     pkill -int ffmpeg &
 fi
