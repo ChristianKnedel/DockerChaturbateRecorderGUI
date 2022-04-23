@@ -11,11 +11,18 @@ from django.template.defaultfilters import slugify
 #models and manager
 from models.wishlistItem import WishlistItem
 
+
+# import the logging library
+import logging
+logger = logging.getLogger(__name__)
+
 class Command(BaseCommand):
     containerPrefix = os.environ['CONTAINER_PREFFIX']
     adapter_factory = AdapterFactory()
 
     def stopAllChannels(self):
+        logger.debug('call stopAllChannels')
+
         items = WishlistItem.unmanaged_objects.filter(type='c', status=1)
         for item in items:
             slug = slugify(item.title)
@@ -28,7 +35,7 @@ class Command(BaseCommand):
 
         
     def stopContainer(self, containerName):
-
+        logger.debug('call stopContainer ' + containerName)
         return subprocess.Popen(
             self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).stopInstance(containerName), 
             shell=True, 
@@ -37,6 +44,7 @@ class Command(BaseCommand):
         )
 
     def deletedChannels(self):
+        logger.debug('call deletedChannels')
         deleted_items = WishlistItem.unmanaged_objects.filter(type='c', deleted=1).order_by('-prio')
         for item in deleted_items:
             slug = slugify(item.title)
@@ -45,6 +53,7 @@ class Command(BaseCommand):
             item.delete()
 
     def getContainer(self):
+        logger.debug('call getContainer')
         containers = subprocess.run(
             self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).getInstances(self.containerPrefix), 
             shell=True, 
@@ -54,6 +63,7 @@ class Command(BaseCommand):
 
 
     def checkChannels(self):
+        logger.debug('call checkChannels')
         containers = self.getContainer()
 
         items = WishlistItem.unmanaged_objects.filter(type='c', deleted=0).order_by('-prio')
@@ -62,17 +72,19 @@ class Command(BaseCommand):
 
             slug = slugify(item.title)
             containerName = str(self.containerPrefix + slug)
+            logger.debug('- check ' + containerName)
 
             if containerName in containers:
                 item.status = 1
                 item.save()
+                logger.debug('- status run')
 
             else:
+                logger.debug('- status dead')
                 if int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']) != 0 and len(containers) > int(os.environ['LIMIT_MAXIMUM_DOCKER_CONTAINER']):
                     break
 
-                container = subprocess.Popen(
-                    self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).startInstance(
+                command = self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).startInstance(
                         os.environ['ABSOLUTE_HOST_MEDIA'], 
                         containerName, 
                         item.title,
@@ -80,17 +92,23 @@ class Command(BaseCommand):
                         os.environ['RECORDER_IMAGE'],
                         os.environ['USER_UID'],
                         os.environ['USER_GID']
-                    ),
+                    )
+
+                container = subprocess.Popen(
+                    command,
                     shell=True, 
                     stdout=subprocess.PIPE,
                     close_fds=True
                 )
+
+                logger.debug('- call command ' + command)
 
                 if item.status == 1:
                     item.status = 0
                     item.save()
 
     def checkFilter(self):
+        logger.debug('call checkFilter')
         containers = self.getContainer()
         delta = 1024
 
@@ -132,6 +150,9 @@ class Command(BaseCommand):
                 elif item.gender == 't':
                     url += 'trans/'
 
+
+            logger.debug('- curl url ' + url)
+
             channels = subprocess.run(
                 "curl " + url + " | grep 'data-room' | grep -v 'no_select' | uniq", 
                 shell=True, 
@@ -148,12 +169,17 @@ class Command(BaseCommand):
                     prio = item.prio
                 )
 
+
+                logger.debug('- create wishlist item ' + channel)
+
                 delta = delta-1
 
     def deleteFilter(self):
+        logger.debug('call deleteFilter')
         WishlistItem.unmanaged_objects.filter(type='f', deleted=1).delete()
 
     def handle(self, *args, **options):
+        logger.debug('call handle')
         PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
         videoDir = os.path.join(PROJECT_ROOT, '../../../media/videos')
 

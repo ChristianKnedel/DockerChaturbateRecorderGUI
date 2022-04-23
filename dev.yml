@@ -21,5 +21,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /Users/christianknedel/videos:/code/database
+      - ./interface/logs:/code/logs
     ports:
       - "8002:8000"
