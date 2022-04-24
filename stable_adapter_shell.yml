@@ -10,7 +10,7 @@ services:
       TZ: "Europe/Berlin"
       LIMIT_MAXIMUM_FOLDER_GB: 20 #or "0" to disable this limit
       LIMIT_MAXIMUM_DOWNLOADS: 10 #or "0" to disable this limit
-      COMMAND_ADAPTER: 'ShellAdapter' #For Kubernetes 'KubernetesAdapter'
+      COMMAND_ADAPTER: 'ShellAdapter'
       CONTAINER_PREFFIX: 'cr_'
       USER_ID: 0
       USER_GID: 0

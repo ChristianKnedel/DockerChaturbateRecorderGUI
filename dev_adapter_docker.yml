@@ -13,7 +13,7 @@ services:
       ABSOLUTE_HOST_MEDIA: "/Users/christianknedel/videos/"
       LIMIT_MAXIMUM_FOLDER_GB: 20 #or "0" to disable this limit
       LIMIT_MAXIMUM_DOWNLOADS: 10 #or "0" to disable this limit
-      COMMAND_ADAPTER: 'DockerAdapter' #For Kubernetes 'KubernetesAdapter'
+      COMMAND_ADAPTER: 'DockerAdapter'
       CONTAINER_PREFFIX: 'cr_'
       RECORDER_IMAGE: 'chatrubate-recorder'
       USER_ID: 0
