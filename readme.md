@@ -18,7 +18,7 @@ Docker-Hub: https://hub.docker.com/repository/docker/chrisknedel/chatrubate-reco
 
 ## run 
 ```
-$ docker run -it --rm -v /Users/christianknedel/videos:/code/database -v /var/run/docker.sock:/var/run/docker.sock -p 8002:8000 -e TZ="Europe/Berlin" -e ABSOLUTE_HOST_MEDIA="/Users/christianknedel/videos/" -e LIMIT_MAXIMUM_FOLDER_GB=20 -e LIMIT_MAXIMUM_DOCKER_CONTAINER=10 -e COMMAND_ADAPTER='DockerAdapter' -e CONTAINER_PREFFIX='cr_' -e RECORDER_IMAGE='chrisknedel/chatrubate-recorder:2.0' chrisknedel/chatrubate-recorder-gui:2.0
+$ docker run -it --rm -v /Users/christianknedel/videos:/code/database -v /var/run/docker.sock:/var/run/docker.sock -p 8002:8000 -e TZ="Europe/Berlin" -e ABSOLUTE_HOST_MEDIA="/Users/christianknedel/videos/" -e COMMAND_ADAPTER='DockerAdapter' -e CONTAINER_PREFFIX='cr_' -e RECORDER_IMAGE='chrisknedel/chatrubate-recorder:2.0' chrisknedel/chatrubate-recorder-gui:2.0
 ```
 Example stable_adapter_docker.yml for DockerChaturbateRecorderGUI:
 ```
