@@ -61,7 +61,8 @@ const recorder = function(toolbar = false, wishlist = false, videolist = false) 
     this.videolist = videolist;
     
     this.toolbarOptions = {
-        '+': this.addWish
+        '+': this.addWish,
+        'Dark/Light Mode': this.toggleDarkMode
     };
     
     this.renderToolbar();
@@ -69,6 +70,9 @@ const recorder = function(toolbar = false, wishlist = false, videolist = false) 
     this.refreshWishlist();
     
     this.heartbeat = setInterval(this.refrashAll.bind(this), 5000);
+}
+recorder.prototype.toggleDarkMode = function() {
+    $("body").toggleClass("dark", "");
 }
 recorder.prototype.refrashAll = function() {
     jQuery(this).trigger( "wishlist:change" );

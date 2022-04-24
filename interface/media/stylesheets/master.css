@@ -2,9 +2,12 @@ html, body {
     margin:0;
     padding:0;
     height: 100%;
-    color: #fff;
-    
+    color: #191919;
+    background: #fff;
+}
+body.dark {
     background: #191919;
+    color: #fff;
 }
 #logo {
     background: red;
@@ -14,7 +17,7 @@ html, body {
     height: 60px;
 }
 #toolbar {
-    background: #ffd600;
+    background: #346beb;
     height:60px;
     width: 100%;
     position: fixed;
@@ -22,6 +25,13 @@ html, body {
     left: 0;
     
 }
+body.dark #toolbar {
+    background: #323232;
+    
+}
+
+
+
 #popup form button,
 #toolbar button{
     height:40px;
@@ -37,12 +47,21 @@ html, body {
     border-radius: 6px;
   
 }
+body.dark #popup form button,
+body.dark #toolbar button{
+    background: #666;
+    color: #fff;
+}
+
 #toolbar button:hover {
     color: #fff;
     background: #FF0000;
   
 }
-
+body.dark #toolbar button:hover {
+    background: #ccc;
+    color: #000;
+}
 
 #wishlist {
     width: 100%;
@@ -102,14 +121,18 @@ li.type-c-recording-true span::after {
     left:0;
     top: 0;
     z-index: 1000;
-    color: #000;
 }
 #popup h1 {
     background: #ffd600;
+    color: #000;
     margin: 0;
     padding: 5px 10px;
     font-size: 18px;
     line-height: 20px;
+}
+body.dark #popup h1 {
+    background: #ff4e45;
+    color: #000;
 }
 #popup h1 span{
     background: #000;
@@ -119,10 +142,20 @@ li.type-c-recording-true span::after {
     cursor: pointer;
     float: right;
 }
+body.dark #popup h1 span{
+    background: #191919;
+    color: #fff;
+}
 #popup .inner {
     border: 1px solid #ffd600;
     background: #fff;
     font-size: 18px;
+    color: #000;
+}
+body.dark #popup .inner {
+    border: 1px solid #ff4e45;
+    background: #191919;
+    color: #fff;
 }
 #popup form .fromrow 
 {
