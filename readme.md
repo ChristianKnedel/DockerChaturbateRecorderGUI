@@ -9,33 +9,34 @@ Docker-Hub: https://hub.docker.com/repository/docker/chrisknedel/chatrubate-reco
 * stream/channel priority
 * stream finder 
   * automatically search for streams
-* coming soon
-  * kubernetes cluster control
-
+* There are different download adapters:
+  * DockerAdapter = Each download runs in its own container
+  * ShellAdapter = Everything takes place in a container
+  * KubernetesAdapter = Is still under development
 
 ![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/blob/master/screens/3.png "record")
 
 ## run 
 ```
-$ docker run -it --rm -v /Users/christianknedel/videos:/code/database -v /var/run/docker.sock:/var/run/docker.sock -p 8002:8000 -e TZ="Europe/Berlin" -e ABSOLUTE_HOST_MEDIA="/Users/christianknedel/videos/" -e LIMIT_MAXIMUM_FOLDER_GB=20 -e LIMIT_MAXIMUM_DOCKER_CONTAINER=10 -e COMMAND_ADAPTER='DockerAdapter' -e CONTAINER_PREFFIX='cr_' -e RECORDER_IMAGE='chrisknedel/chatrubate-recorder' chrisknedel/chatrubate-recorder-gui
+$ docker run -it --rm -v /Users/christianknedel/videos:/code/database -v /var/run/docker.sock:/var/run/docker.sock -p 8002:8000 -e TZ="Europe/Berlin" -e ABSOLUTE_HOST_MEDIA="/Users/christianknedel/videos/" -e LIMIT_MAXIMUM_FOLDER_GB=20 -e LIMIT_MAXIMUM_DOCKER_CONTAINER=10 -e COMMAND_ADAPTER='DockerAdapter' -e CONTAINER_PREFFIX='cr_' -e RECORDER_IMAGE='chrisknedel/chatrubate-recorder:2.0' chrisknedel/chatrubate-recorder-gui:2.0
 ```
-Example stack.yml for DockerChaturbateRecorderGUI:
+Example stable_adapter_docker.yml for DockerChaturbateRecorderGUI:
 ```
 version: '2'
 
 services:    
   app:
-    image: chrisknedel/chatrubate-recorder-gui:1.0
+    image: chrisknedel/chatrubate-recorder-gui:2.0
     container_name: recorder_app
     restart: always
     environment:
       TZ: "Europe/Berlin"
       ABSOLUTE_HOST_MEDIA: "/Users/christianknedel/videos/"
       LIMIT_MAXIMUM_FOLDER_GB: 20 #or "0" to disable this limit
-      LIMIT_MAXIMUM_DOCKER_CONTAINER: 10 #or "0" to disable this limit
-      COMMAND_ADAPTER: 'DockerAdapter' #For Kubernetes 'KubernetesAdapter'
+      LIMIT_MAXIMUM_DOWNLOADS: 10 #or "0" to disable this limit
+      COMMAND_ADAPTER: 'DockerAdapter'
       CONTAINER_PREFFIX: 'cr_'
-      RECORDER_IMAGE: 'chrisknedel/chatrubate-recorder:1.0'
+      RECORDER_IMAGE: 'chrisknedel/chatrubate-recorder:2.0'
       USER_UID: 0
       USER_GID: 0
     volumes:
@@ -76,20 +77,20 @@ $ cd DockerChaturbateRecorderGUI-master
 $ docker build -t chatrubate-recorder ./recorder/
 ```
 If you prefer to use only the command line, then this call will help you:
-``docker run -it -v /Users/CharlieScene/docker/chatrubate/input:/code/videos/ chatrubate-recorder /code/recorder.sh -u https://chaturbate.com/triple_crystal/``
+``docker run -it -v /Users/CharlieScene/docker/chatrubate/input:/code/videos/ chatrubate-recorder /code/recorder.sh -u https://chaturbate.com/triple_crystal/ -c video_triple_crystal``
 
 
 #### 2.) build web app
 ```
-$ docker-compose -f dev.yml build
+$ docker-compose -f dev_adapter_docker.yml build
 ```
 
 #### 3.) directory path
-Change the 'ABSOLUTE_HOST_MEDIA'-path in dev.yml with the directory you got set at the start.
+Change the 'ABSOLUTE_HOST_MEDIA'-path in dev_adapter_docker.yml with the directory you got set at the start.
 
 #### 4.) start the container
 ```
-$ docker-compose -f dev.yml up -d
+$ docker-compose -f dev_adapter_docker.yml up -d
 ```
 After that I can call my recoder server with the IP of the server / diskstation and the assigned port 8002. Great! 
 ![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/blob/master/screens/3.png "record")
