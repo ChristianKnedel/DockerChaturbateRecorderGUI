@@ -23,6 +23,20 @@ class WishlistItem(models.Model):
       ('t', 'TRANS')
     )
 
+    RESOLUTION = (
+      ('7680:4320', '8K / 8K UHD'),
+      ('5120:2880', '5K'),
+      ('4096:2160', '4K'),
+      ('3840:2160', '2160p / UHD'),
+      ('2560:1440', '1440p / QHD / QuadHD / WQHD'),
+      ('2048:1080', '2K'),
+      ('1920:1080', '1080p / Full HD / FHD'),
+      ('1280:720', '720p / HD'),
+      ('960:540', '540p / qHD'),
+      ('640:480', '480p'),
+    )
+
+
     REGION = (
       ('all', 'ALL'),
       ('north-american', 'North American Cams'),
@@ -53,7 +67,7 @@ class WishlistItem(models.Model):
       (9, 9),
     )
 
-
+    resolution = models.CharField(max_length=1, choices=RESOLUTION, default='1920:1080')
     type = models.CharField(max_length=1, choices=TYPE, default='c')
     title = models.CharField(db_index=True, unique=True, max_length=255)
     gender = models.CharField(max_length=1, choices=GENDER, default='a')
