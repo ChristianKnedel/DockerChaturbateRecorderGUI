@@ -99,7 +99,8 @@ class Command(BaseCommand):
                         int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']),
                         os.environ['RECORDER_IMAGE'],
                         os.environ['USER_UID'],
-                        os.environ['USER_GID']
+                        os.environ['USER_GID'],
+                        item.resolution
                     )
 
                 container = subprocess.Popen(

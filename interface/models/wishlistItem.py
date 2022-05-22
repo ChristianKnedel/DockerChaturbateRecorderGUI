@@ -67,7 +67,7 @@ class WishlistItem(models.Model):
       (9, 9),
     )
 
-    resolution = models.CharField(max_length=1, choices=RESOLUTION, default='1920:1080')
+    resolution = models.CharField(max_length=12, choices=RESOLUTION, default='1920:1080')
     type = models.CharField(max_length=1, choices=TYPE, default='c')
     title = models.CharField(db_index=True, unique=True, max_length=255)
     gender = models.CharField(max_length=1, choices=GENDER, default='a')

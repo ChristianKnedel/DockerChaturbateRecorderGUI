@@ -7,10 +7,11 @@ if [[ $SIZE -gt 0 ]] && [[ $SIZE -gt $(($LIMIT_MAXIMUM_FOLDER_GB * 1024 * 1024))
     exit -1
 fi
 
-while getopts ":u:c:" o; do
+while getopts ":u:c:r:" o; do
     case "$o" in
         c) SLUG=${OPTARG};;
-        u) url=${OPTARG};;
+        u) URL=${OPTARG};;
+        r) RESULUTION=${OPTARG};;
     esac
 done
 
@@ -21,11 +22,12 @@ then
 fi
 
 TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
-OUTPUT=$(curl "${url}")
+OUTPUT=$(curl "${URL}")
 
 NAME=$(echo "${OUTPUT}}" | grep 'og:title' | grep -E "Watch (.*?) live on Chaturbate!" | sed 's/.*Watch\s\(.*\)\slive\son\sChaturbate.*/\1/')
 
 PLAYLIST_URL=$(echo "${OUTPUT}" | grep m3u8  | sed "s/\\\u002D/-/g" | grep -o 'https://[a-zA-Z0-9.+-_:/]*.m3u8')
 [ ! -d "/code/videos/${SLUG}" ] && mkdir -p "/code/videos/${SLUG}"
 chown -R recorder:recorder "/code/videos/${SLUG}"
-ffmpeg -loglevel error -hide_banner -nostats -i ${PLAYLIST_URL} -c copy -bsf:a aac_adtstoasc  /code/videos/${SLUG}/${SLUG}-${TIMESTAMP}.mp4
+echo "ffmpeg -loglevel error -hide_banner -nostats -i ${PLAYLIST_URL} -vf scale=${RESULUTION} -c copy -bsf:a aac_adtstoasc  /code/videos/${SLUG}/${SLUG}-${TIMESTAMP}.mp4"
+ffmpeg -loglevel error -hide_banner -nostats -i ${PLAYLIST_URL} -vf scale=${RESULUTION} -bsf:a aac_adtstoasc  /code/videos/${SLUG}/${SLUG}-${TIMESTAMP}.mp4
