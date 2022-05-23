@@ -175,7 +175,8 @@ class Command(BaseCommand):
                 WishlistItem.unmanaged_objects.get_or_create(
                     title = channel,
                     type = 'c',
-                    prio = item.prio
+                    prio = item.prio,
+                    resolution = item.resolution
                 )
 
 
