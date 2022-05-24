@@ -19,7 +19,8 @@ python3 \
 python3-pip \
 gettext \
 cron \
-ffmpeg
+ffmpeg \
+curl
 
 #install docker
 RUN curl -fsSL https://get.docker.com | sh
