@@ -103,7 +103,7 @@ class Command(BaseCommand):
                         item.resolution
                     )
 
-                container = subprocess.Popen(
+                container = subprocess.run(
                     command,
                     shell=True, 
                     stdout=subprocess.PIPE,
