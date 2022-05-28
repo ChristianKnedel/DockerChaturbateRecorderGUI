@@ -106,7 +106,9 @@ class Command(BaseCommand):
                 container = subprocess.Popen(
                     command,
                     shell=True, 
-                    stdout=subprocess.PIPE,
+                    stdin=None, 
+                    stdout=None, 
+                    stderr=None,
                     close_fds=True
                 )
 
@@ -170,7 +172,8 @@ class Command(BaseCommand):
 
             for channel in re.findall(r'(?<=<a href="/)[^/"]*', channels):
                 if delta == 0:
-                    return False
+                    break
+
 
                 WishlistItem.unmanaged_objects.get_or_create(
                     title = channel,

@@ -12,8 +12,9 @@ Docker-Hub: https://hub.docker.com/repository/docker/chrisknedel/chatrubate-reco
 * There are different download adapters:
   * DockerAdapter = Each download runs in its own container
   * ShellAdapter = Everything takes place in a container
-  * KubernetesAdapter = Is still under development
-
+  * KubernetesAdapter = Is still under development, branch https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/tree/kubernetes-adapter
+* i18n = Is still under development, branch https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/tree/i18n
+* stream resolution/Capture Quality = development completed/beta, branch https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/tree/15-resolution
 ![alt text](https://github.com/terrorist-squad/DockerChaturbateRecorderGUI/blob/master/screens/3.png "record")
 
 ## run 
