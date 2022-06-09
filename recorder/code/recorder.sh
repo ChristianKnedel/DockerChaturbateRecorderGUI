@@ -29,4 +29,4 @@ NAME=$(echo "${OUTPUT}}" | grep 'og:title' | grep -E "Watch (.*?) live on Chatur
 PLAYLIST_URL=$(echo "${OUTPUT}" | grep m3u8  | sed "s/\\\u002D/-/g" | grep -o 'https://[a-zA-Z0-9.+-_:/]*.m3u8')
 [ ! -d "/code/videos/${SLUG}" ] && mkdir -p "/code/videos/${SLUG}"
 chown -R recorder:recorder "/code/videos/${SLUG}"
-nice -n 19 ffmpeg -loglevel error -hide_banner -nostats -i ${PLAYLIST_URL} -s ${RESULUTION}  -c:a copy -c:v copy /code/videos/${SLUG}/${SLUG}-${TIMESTAMP}.mp4 ffmpeg -loglevel error -hide_banner -nostats -i ${PLAYLIST_URL} -s ${RESULUTION}  -c:a copy -c:v copy /code/videos/${SLUG}/${SLUG}-${TIMESTAMP}.mp4
+nice -n 19 ffmpeg -loglevel error -hide_banner -nostats -i ${PLAYLIST_URL} -s ${RESULUTION}  -c:a copy -c:v copy /code/videos/${SLUG}/${SLUG}-${TIMESTAMP}.mp4
