@@ -165,15 +165,13 @@ class Command(BaseCommand):
             logger.debug('- curl url ' + url)
 
             channels = subprocess.run(
-                "curl " + url + " | grep 'data-room' | grep -v 'no_select' | uniq | head -n " + str(delta), 
+                "curl " + url + " | grep 'data-room' | grep -v 'no_select' | uniq | head -n " + str(delta) + ' | shuf -n 4', 
                 shell=True, 
                 stdout=subprocess.PIPE
             ).stdout.decode()
 
             for channel in re.findall(r'(?<=<a href="/)[^/"]*', channels):
-                if delta == 0:
-                    break
-
+  
 
                 WishlistItem.unmanaged_objects.get_or_create(
                     title = channel,
@@ -182,10 +180,8 @@ class Command(BaseCommand):
                     resolution = item.resolution
                 )
 
-
                 logger.debug('- create wishlist item ' + channel)
-
-                delta = delta-1
+                break
 
     def deleteFilter(self):
         logger.debug('call deleteFilter')
