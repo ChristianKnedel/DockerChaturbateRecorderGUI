@@ -165,7 +165,7 @@ class Command(BaseCommand):
             logger.debug('- curl url ' + url)
 
             channels = subprocess.run(
-                "curl " + url + " | grep 'data-room' | grep -v 'no_select' | uniq", 
+                "curl " + url + " | grep 'data-room' | grep -v 'no_select' | uniq | head -n " + str(delta), 
                 shell=True, 
                 stdout=subprocess.PIPE
             ).stdout.decode()
