@@ -99,13 +99,16 @@ class Command(BaseCommand):
                         int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']),
                         os.environ['RECORDER_IMAGE'],
                         os.environ['USER_UID'],
-                        os.environ['USER_GID']
+                        os.environ['USER_GID'],
+                        item.resolution
                     )
 
                 container = subprocess.Popen(
                     command,
                     shell=True, 
-                    stdout=subprocess.PIPE,
+                    stdin=None, 
+                    stdout=None, 
+                    stderr=None,
                     close_fds=True
                 )
 
@@ -162,19 +165,21 @@ class Command(BaseCommand):
             logger.debug('- curl url ' + url)
 
             channels = subprocess.run(
-                "curl " + url + " | grep 'data-room' | grep -v 'no_select' | uniq", 
+                "curl " + url + " | grep 'data-room' | grep -v 'no_select' | uniq | head -n " + str(delta), 
                 shell=True, 
                 stdout=subprocess.PIPE
             ).stdout.decode()
 
             for channel in re.findall(r'(?<=<a href="/)[^/"]*', channels):
                 if delta == 0:
-                    return False
+                    break
+
 
                 WishlistItem.unmanaged_objects.get_or_create(
                     title = channel,
                     type = 'c',
-                    prio = item.prio
+                    prio = item.prio,
+                    resolution = item.resolution
                 )
 
 

@@ -11,7 +11,7 @@ do
 
     if [ "$COMMAND_ADAPTER" != "DockerAdapter" ]
     then
-        su -l -p recorder -c "cd /code/ && /usr/bin/python3 manage.py check_chatrubate" &
+        su -p recorder -c "cd /code/ && /usr/bin/python3 manage.py check_chatrubate" &
     else
         cd /code/ && /usr/bin/python3 manage.py check_chatrubate &
     fi
