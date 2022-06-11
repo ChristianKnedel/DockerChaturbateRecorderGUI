@@ -3,7 +3,7 @@ version: '2'
 
 services:    
   app:
-    image: chrisknedel/chatrubate-recorder-gui:2.0
+    image: chrisknedel/chatrubate-recorder-gui:3.0
     container_name: recorder_app
     restart: always
     environment:
