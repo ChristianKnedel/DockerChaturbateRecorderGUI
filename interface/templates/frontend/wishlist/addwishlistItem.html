@@ -54,6 +54,8 @@
   if( jQuery( "#id_type" ).val() == 'f' ) 
   {
       jQuery('label[for="id_title"]').text('Tag');
+      jQuery( "label[for='id_gender']" ).closest('.fromrow').show();
+            
   }
   else
   {
@@ -72,7 +74,9 @@ jQuery( "#id_title" ).keyup(
             jQuery( "label[for='id_region']" ).closest('.fromrow').hide();
             jQuery( "#id_age" ).val( "all" );
             jQuery( "label[for='id_age']" ).closest('.fromrow').hide();
-            jQuery( "label[for='id_gender']" ).closest('.fromrow').hide();
+            if( jQuery( "#id_type" ).val() == 'c' ) {
+                jQuery( "label[for='id_gender']" ).closest('.fromrow').hide();
+            }
 
         }
         else
