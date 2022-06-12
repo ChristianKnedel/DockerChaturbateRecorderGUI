@@ -18,7 +18,7 @@ Docker-Hub: https://hub.docker.com/repository/docker/chrisknedel/chatrubate-reco
 
 ## run 
 ```
-$ docker run -it --rm -v /Users/christianknedel/videos:/code/database -v /var/run/docker.sock:/var/run/docker.sock -p 8002:8000 -e TZ="Europe/Berlin" -e ABSOLUTE_HOST_MEDIA="/Users/christianknedel/videos/" -e COMMAND_ADAPTER='DockerAdapter' -e CONTAINER_PREFFIX='cr_' -e RECORDER_IMAGE='chrisknedel/chatrubate-recorder:2.0' chrisknedel/chatrubate-recorder-gui:2.0
+$ docker run -it --rm -v /Users/christianknedel/videos:/code/database -v /var/run/docker.sock:/var/run/docker.sock -p 8002:8000 -e TZ="Europe/Berlin" -e ABSOLUTE_HOST_MEDIA="/Users/christianknedel/videos/" -e COMMAND_ADAPTER='DockerAdapter' -e CONTAINER_PREFFIX='cr_' -e RECORDER_IMAGE='chrisknedel/chatrubate-recorder:3.0' chrisknedel/chatrubate-recorder-gui:3.0
 ```
 Example stable_adapter_docker.yml for DockerChaturbateRecorderGUI:
 ```
@@ -26,7 +26,7 @@ version: '2'
 
 services:    
   app:
-    image: chrisknedel/chatrubate-recorder-gui:2.0
+    image: chrisknedel/chatrubate-recorder-gui:3.0
     container_name: recorder_app
     restart: always
     environment:
@@ -36,7 +36,7 @@ services:
       LIMIT_MAXIMUM_DOWNLOADS: 10 #or "0" to disable this limit
       COMMAND_ADAPTER: 'DockerAdapter'
       CONTAINER_PREFFIX: 'cr_'
-      RECORDER_IMAGE: 'chrisknedel/chatrubate-recorder:2.0'
+      RECORDER_IMAGE: 'chrisknedel/chatrubate-recorder:3.0'
       USER_UID: 0
       USER_GID: 0
     volumes:
