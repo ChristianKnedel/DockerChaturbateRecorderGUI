@@ -1,6 +1,6 @@
 # docker ChaturbateRecorder
 Download Chaturbate video stream with  DockerChaturbateRecorderGUI! Try it out..
-Docker-Hub: https://hub.docker.com/repository/docker/chrisknedel/chatrubate-recorder-gui
+Docker-Hub: https://hub.docker.com/r/chrisknedel/chatrubate-recorder-gui
 
 ## Features
 * watchlist/wishlist
