@@ -1,6 +1,6 @@
 # docker ChaturbateRecorder
 Download Chaturbate video stream with  DockerChaturbateRecorderGUI! Try it out..
-Docker-Hub: https://hub.docker.com/r/chrisknedel/chatrubate-recorder-gui
+Docker-Hub: https://hub.docker.com/r/chrisknedel/chaturbate-recorder-gui
 
 ## Features
 * watchlist/wishlist
@@ -26,7 +26,7 @@ version: '2'
 
 services:    
   app:
-    image: chrisknedel/chatrubate-recorder-gui:3.0
+    image: chrisknedel/chaturbate-recorder-gui
     container_name: recorder_app
     restart: always
     environment:
@@ -36,7 +36,7 @@ services:
       LIMIT_MAXIMUM_DOWNLOADS: 10 #or "0" to disable this limit
       COMMAND_ADAPTER: 'DockerAdapter'
       CONTAINER_PREFFIX: 'cr_'
-      RECORDER_IMAGE: 'chrisknedel/chatrubate-recorder:3.0'
+      RECORDER_IMAGE: 'chrisknedel/chaturbate-recorder'
       USER_UID: 0
       USER_GID: 0
     volumes:
@@ -77,7 +77,7 @@ $ cd DockerChaturbateRecorderGUI-master
 $ docker build -t chatrubate-recorder ./recorder/
 ```
 If you prefer to use only the command line, then this call will help you:
-``docker run -it -v /Users/CharlieScene/docker/chatrubate/input:/code/videos/ chatrubate-recorder /code/recorder.sh -u https://chaturbate.com/triple_crystal/ -c video_triple_crystal``
+``docker run -it -v /Users/CharlieScene/docker/chatrubate/input:/code/videos/ chaturbate-recorder /code/recorder.sh -u https://chaturbate.com/triple_crystal/ -c video_triple_crystal``
 
 
 #### 2.) build web app
