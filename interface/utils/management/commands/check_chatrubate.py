@@ -93,39 +93,27 @@ class Command(BaseCommand):
                 if int(os.environ['LIMIT_MAXIMUM_DOWNLOADS']) != 0 and len(containers) > int(os.environ['LIMIT_MAXIMUM_DOWNLOADS']):
                     break
 
+                command = self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).startInstance(
+                        os.environ['ABSOLUTE_HOST_MEDIA'], 
+                        containerName, 
+                        item.title,
+                        int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']),
+                        os.environ['RECORDER_IMAGE'],
+                        os.environ['USER_UID'],
+                        os.environ['USER_GID'],
+                        item.resolution
+                    )
 
-                # Form the URL using the title
-                url = str("https://chaturbate.com/" + slug)
+                container = subprocess.Popen(
+                    command,
+                    shell=True, 
+                    stdin=None, 
+                    stdout=None, 
+                    stderr=None,
+                    close_fds=True
+                )
 
-                # Fetch the HTML content from the URL
-                response = requests.get(url)
-                html_content = response.text
-
-                # Find all occurrences of URLs ending with .m3u8
-                urls = re.findall(r'https://[a-zA-Z0-9.+-_:/]*\.m3u8', html_content)
-
-                if urls:
-                        command = self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).startInstance(
-                                os.environ['ABSOLUTE_HOST_MEDIA'], 
-                                containerName, 
-                                item.title,
-                                int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']),
-                                os.environ['RECORDER_IMAGE'],
-                                os.environ['USER_UID'],
-                                os.environ['USER_GID'],
-                                item.resolution
-                            )
-
-                        container = subprocess.Popen(
-                            command,
-                            shell=True, 
-                            stdin=None, 
-                            stdout=None, 
-                            stderr=None,
-                            close_fds=True
-                        )
-
-                        logger.debug('- call command ' + command)
+                logger.debug('- call command ' + command)
                 else:
                     logger.debug('- channel ' + slug + ' is offline')
                 if item.status == 1:
