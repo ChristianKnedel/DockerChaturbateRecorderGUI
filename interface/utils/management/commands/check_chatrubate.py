@@ -116,9 +116,9 @@ class Command(BaseCommand):
                 logger.debug('- call command ' + command)
             else:
                 logger.debug('- channel ' + slug + ' is offline')
-                if item.status == 1:
-                    item.status = 0
-                    item.save()
+            if item.status == 1:
+                item.status = 0
+                item.save()
 
     def checkFilter(self):
         logger.debug('call checkFilter')
