@@ -39,20 +39,20 @@ class WishlistItem(models.Model):
 
     REGION = (
       ('all', 'ALL'),
-      ('north-american', 'North American Cams'),
-      ('other-region', 'Other Region Cams'),
-      ('euro-russian', 'Euro Russian Cams '),
-      ('asian', 'Asian Cams'),
-      ('south-american', 'South American Cams')
+      ('NA', 'North American Cams'),
+      ('O', 'Other Region Cams'),
+      ('ER', 'Europe/Russian Cams'),
+      ('AS', 'Asian Cams'),
+      ('SA', 'South American Cams')
     )
 
     AGE = (
       ('all', 'ALL'),
       ('teen', 'Teen Cams (18+)'),
-      ('18to21', '18 to 21 Cams'),
-      ('20to30', '20 to 30 Cams'),
-      ('30to50', '30 to 50 Cams'),
-      ('mature', 'Mature Cams (50+)')
+      ('18-21', '18 to 21 Cams'),
+      ('20-30', '20 to 30 Cams'),
+      ('30-50', '30 to 50 Cams'),
+      ('50-100', 'Mature Cams (50+)')
     )
 
     PRIO = (

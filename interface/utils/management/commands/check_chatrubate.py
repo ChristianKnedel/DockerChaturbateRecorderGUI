@@ -6,6 +6,7 @@ from utils.adapter.adapter_factory import AdapterFactory
 #utils
 import os, subprocess
 import re
+import requests
 from django.template.defaultfilters import slugify
 
 #models and manager
@@ -92,28 +93,41 @@ class Command(BaseCommand):
                 if int(os.environ['LIMIT_MAXIMUM_DOWNLOADS']) != 0 and len(containers) > int(os.environ['LIMIT_MAXIMUM_DOWNLOADS']):
                     break
 
-                command = self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).startInstance(
-                        os.environ['ABSOLUTE_HOST_MEDIA'], 
-                        containerName, 
-                        item.title,
-                        int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']),
-                        os.environ['RECORDER_IMAGE'],
-                        os.environ['USER_UID'],
-                        os.environ['USER_GID'],
-                        item.resolution
-                    )
 
-                container = subprocess.Popen(
-                    command,
-                    shell=True, 
-                    stdin=None, 
-                    stdout=None, 
-                    stderr=None,
-                    close_fds=True
-                )
+                # Form the URL using the title
+                url = str("https://chaturbate.com/" + slug)
 
-                logger.debug('- call command ' + command)
+                # Fetch the HTML content from the URL
+                response = requests.get(url)
+                html_content = response.text
 
+                # Find all occurrences of URLs ending with .m3u8
+                urls = re.findall(r'https://[a-zA-Z0-9.+-_:/]*\.m3u8', html_content)
+
+                if urls:
+                        command = self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).startInstance(
+                                os.environ['ABSOLUTE_HOST_MEDIA'], 
+                                containerName, 
+                                item.title,
+                                int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']),
+                                os.environ['RECORDER_IMAGE'],
+                                os.environ['USER_UID'],
+                                os.environ['USER_GID'],
+                                item.resolution
+                            )
+
+                        container = subprocess.Popen(
+                            command,
+                            shell=True, 
+                            stdin=None, 
+                            stdout=None, 
+                            stderr=None,
+                            close_fds=True
+                        )
+
+                        logger.debug('- call command ' + command)
+                else:
+                    logger.debug('- channel ' + slug + ' is offline')
                 if item.status == 1:
                     item.status = 0
                     item.save()
@@ -132,56 +146,45 @@ class Command(BaseCommand):
         items = WishlistItem.unmanaged_objects.filter(type='f', deleted=0).order_by('-prio')
             
         for item in items:
-            url = 'https://chaturbate.com/'
+            url = 'https://chaturbate.com/api/ts/roomlist/room-list/?offset=0&limit=' + str(delta)
 
             if item.age != 'all':
-                url = 'https://chaturbate.com/' + item.age  + '-cams/'
+                url += '&ages=' + item.age
             elif item.region != 'all':
-                url = 'https://chaturbate.com/' + item.region  + '-cams/'
+                url += '&regions=' + item.region
             else:
-                url = 'https://chaturbate.com/tag/' + item.title + '/'
+                url += '&hashtags=' + item.title
    
 
-            if item.region == 'all' and item.age == 'all':
-                if item.gender == 'w':
-                    url += 'w/'
-                elif item.gender == 'm':
-                    url += 'm/'
-                elif item.gender == 'c':
-                    url += 'c/'
-                elif item.gender == 't':
-                    url += 't/'
-            else:
-                if item.gender == 'w':
-                    url += 'female/'
-                elif item.gender == 'm':
-                    url += 'male/'
-                elif item.gender == 'c':
-                    url += 'couple/'
-                elif item.gender == 't':
-                    url += 'trans/'
+
+            #https://chaturbate.com/api/ts/roomlist/room-list/?genders=m&limit=90&offset=0
+
+
+            if item.gender == 'w':
+                url += '&genders=w'
+            elif item.gender == 'm':
+                url += '&genders=m'
+            elif item.gender == 'c':
+                url += '&genders=c'
+            elif item.gender == 't':
+                url += '&genders=t'
 
 
             logger.debug('- curl url ' + url)
 
-            channels = subprocess.run(
-                "curl " + url + " | grep 'data-room' | grep -v 'no_select' | uniq | head -n " + str(delta) + ' | shuf -n 4', 
-                shell=True, 
-                stdout=subprocess.PIPE
-            ).stdout.decode()
+            r = requests.get(url)
+            data = r.json()
 
-            for channel in re.findall(r'(?<=<a href="/)[^/"]*', channels):
+            for channel in data['rooms']:
+                logger.debug(channel)
   
-
+                logger.debug('- find channel' + channel['username'])
                 WishlistItem.unmanaged_objects.get_or_create(
-                    title = channel,
+                    title = channel['username'],
                     type = 'c',
                     prio = item.prio,
                     resolution = item.resolution
                 )
-
-                logger.debug('- create wishlist item ' + channel)
-                break
 
     def deleteFilter(self):
         logger.debug('call deleteFilter')
