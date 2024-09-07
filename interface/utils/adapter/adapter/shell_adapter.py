@@ -7,9 +7,9 @@ class ShellAdapter(object):
         return "kill -int $(ps -aux | grep 'ffmpeg' | grep '" + containerName + "' | awk '{ print $2 }')"
 
 
-   def startInstance(self, media_path, containerName, title, limit_in_gb, imageName, UID, GID, resolution):
-        return "/recorder/recorder.sh -u https://chaturbate.com/{}/ -c {} -r {} &".format(
-            title,
+   def startInstance(self, media_path, containerName, stream, limit_in_gb, imageName, UID, GID, resolution):
+        return "/recorder/recorder.sh -u {} -c {} -r {} &".format(
+            stream,
             containerName,
             resolution
         )

@@ -5,5 +5,5 @@ class KubernetesAdapter(object):
    def stopInstance(self, containerName):
         return "echo 'not implemented'"
 
-   def startInstance(self, media_path, containerName, title):
+   def startInstance(self, media_path, containerName, stream):
        return "echo 'not implemented'"

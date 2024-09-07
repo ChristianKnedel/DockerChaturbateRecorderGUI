@@ -102,13 +102,15 @@ class Command(BaseCommand):
                 html_content = response.text
 
                 # Find all occurrences of URLs ending with .m3u8
-                urls = re.findall(r'https://[a-zA-Z0-9.+-_:/]*\.m3u8', html_content)
+                streams = re.findall(r'https://[a-zA-Z0-9.+-_:/]*\.m3u8', html_content)
 
-                if urls:
+                if streams:
+                        stream = re.sub(r'\\u([0-9A-Fa-f]{4})', lambda m: chr(int(m.group(1), 16)), streams[0])
+                        
                         command = self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).startInstance(
                                 os.environ['ABSOLUTE_HOST_MEDIA'], 
                                 containerName, 
-                                item.title,
+                                stream,
                                 int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']),
                                 os.environ['RECORDER_IMAGE'],
                                 os.environ['USER_UID'],
