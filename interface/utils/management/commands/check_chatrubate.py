@@ -80,56 +80,57 @@ class Command(BaseCommand):
         for item in items:
 
             slug = slugify(item.title)
+
+            logger.debug(slug)
+
             containerName = str(self.containerPrefix + slug)
             logger.debug('- check ' + containerName)
 
             if containerName in containers:
                 item.status = 1
                 item.save()
-                logger.debug('- status run')
+                logger.debug('- container status run')
 
             else:
-                logger.debug('- status dead')
+                logger.debug('- container status dead')
                 if int(os.environ['LIMIT_MAXIMUM_DOWNLOADS']) != 0 and len(containers) > int(os.environ['LIMIT_MAXIMUM_DOWNLOADS']):
                     break
 
+                response = requests.get(str("https://chaturbate.com/" + item.title + '/'))
+                decode = response.text.replace("\\u0022", '"')
 
-                # Form the URL using the title
-                url = str("https://chaturbate.com/" + slug)
 
-                # Fetch the HTML content from the URL
-                response = requests.get(url)
-                html_content = response.text
 
-                # Find all occurrences of URLs ending with .m3u8
-                streams = re.findall(r'https://[a-zA-Z0-9.+-_:/]*\.m3u8', html_content)
+                streams = re.findall(r'"(https?://[^"]*m3u8[^"]*)"', decode)
 
-                if streams:
-                        stream = re.sub(r'\\u([0-9A-Fa-f]{4})', lambda m: chr(int(m.group(1), 16)), streams[0])
-                        
-                        command = self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).startInstance(
-                                os.environ['ABSOLUTE_HOST_MEDIA'], 
-                                containerName, 
-                                stream,
-                                int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']),
-                                os.environ['RECORDER_IMAGE'],
-                                os.environ['USER_UID'],
-                                os.environ['USER_GID'],
-                                item.resolution
+                for stream in streams:
+                        logger.debug(stream)
+
+                        try:
+                            command = self.adapter_factory.create_adapter(os.environ['COMMAND_ADAPTER']).startInstance(
+                                    os.environ['ABSOLUTE_HOST_MEDIA'], 
+                                    containerName, 
+                                    stream.encode('utf-8').decode('unicode_escape'),
+                                    int(os.environ['LIMIT_MAXIMUM_FOLDER_GB']),
+                                    os.environ['RECORDER_IMAGE'],
+                                    os.environ['USER_UID'],
+                                    os.environ['USER_GID'],
+                                    item.resolution
+                                )
+
+                            container = subprocess.Popen(
+                                command,
+                                shell=True, 
+                                stdin=None, 
+                                stdout=None, 
+                                stderr=None,
+                                close_fds=True
                             )
+                            ogger.debug('- call command ' + command)
 
-                        container = subprocess.Popen(
-                            command,
-                            shell=True, 
-                            stdin=None, 
-                            stdout=None, 
-                            stderr=None,
-                            close_fds=True
-                        )
+                        except:
+                            logger.debug('- channel ' + slug + ' is offline')
 
-                        logger.debug('- call command ' + command)
-                else:
-                    logger.debug('- channel ' + slug + ' is offline')
                 if item.status == 1:
                     item.status = 0
                     item.save()
@@ -156,10 +157,6 @@ class Command(BaseCommand):
                 url += '&regions=' + item.region
             else:
                 url += '&hashtags=' + item.title
-   
-
-
-            #https://chaturbate.com/api/ts/roomlist/room-list/?genders=m&limit=90&offset=0
 
 
             if item.gender == 'w':
@@ -171,22 +168,22 @@ class Command(BaseCommand):
             elif item.gender == 't':
                 url += '&genders=t'
 
-
             logger.debug('- curl url ' + url)
 
-            r = requests.get(url)
-            data = r.json()
+            response = requests.get(url)
+            if response:
+                data = response.json()
 
-            for channel in data['rooms']:
-                logger.debug(channel)
-  
-                logger.debug('- find channel' + channel['username'])
-                WishlistItem.unmanaged_objects.get_or_create(
-                    title = channel['username'],
-                    type = 'c',
-                    prio = item.prio,
-                    resolution = item.resolution
-                )
+                for channel in data['rooms']:
+                    logger.debug(channel)
+    
+                    logger.debug('- find channel' + channel['username'])
+                    WishlistItem.unmanaged_objects.get_or_create(
+                        title = channel['username'],
+                        type = 'c',
+                        prio = item.prio,
+                        resolution = item.resolution
+                    )
 
     def deleteFilter(self):
         logger.debug('call deleteFilter')
