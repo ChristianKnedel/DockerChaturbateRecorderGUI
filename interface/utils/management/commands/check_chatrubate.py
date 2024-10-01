@@ -82,6 +82,7 @@ class Command(BaseCommand):
             slug = slugify(item.title)
 
             logger.debug(slug)
+            logger.debug(slug)
 
             containerName = str(self.containerPrefix + slug)
             logger.debug('- check ' + containerName)
@@ -104,6 +105,8 @@ class Command(BaseCommand):
                 streams = re.findall(r'"(https?://[^"]*m3u8[^"]*)"', decode)
 
                 for stream in streams:
+                        print(stream)
+                        logger.debug(stream)
                         logger.debug(stream)
 
                         try:
@@ -115,7 +118,8 @@ class Command(BaseCommand):
                                     os.environ['RECORDER_IMAGE'],
                                     os.environ['USER_UID'],
                                     os.environ['USER_GID'],
-                                    item.resolution
+                                    item.resolution,
+                                    os.environ['LIMIT_MAXIMUM_TIME']
                                 )
 
                             container = subprocess.Popen(

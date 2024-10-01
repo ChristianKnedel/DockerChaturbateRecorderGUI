@@ -10,17 +10,18 @@ services:
     restart: always
     environment:
       TZ: "Europe/Berlin"
-      ABSOLUTE_HOST_MEDIA: "/Users/christianknedel/videos/"
+      ABSOLUTE_HOST_MEDIA: "/volume1/docker/test/videos/"
       LIMIT_MAXIMUM_FOLDER_GB: 20 #or "0" to disable this limit
       LIMIT_MAXIMUM_DOWNLOADS: 10 #or "0" to disable this limit
+      LIMIT_MAXIMUM_TIME: "01:00:00" # save channel every 30 minutes with "00:30:00"
       COMMAND_ADAPTER: 'DockerAdapter'
       CONTAINER_PREFFIX: 'cr_'
-      RECORDER_IMAGE: 'chatrubate-recorder'
+      RECORDER_IMAGE: 'chaturbate-recorder'
       USER_ID: 0
       USER_GID: 0
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /Users/christianknedel/videos:/code/database
-      - ./interface/logs:/code/logs
+      - /volume1/docker/test/videos:/code/database
+      - /volume1/docker/test/interface/logs:/code/logs
     ports:
       - "8002:8000"

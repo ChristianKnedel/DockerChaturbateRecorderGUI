@@ -7,11 +7,12 @@ if [[ $SIZE -gt 0 ]] && [[ $SIZE -gt $(($LIMIT_MAXIMUM_FOLDER_GB * 1024 * 1024))
     exit -1
 fi
 
-while getopts ":u:c:r:" o; do
+while getopts ":u:c:r:l:" o; do
     case "$o" in
         c) SLUG=${OPTARG};;
         u) URL=${OPTARG};;
         r) RESULUTION=${OPTARG};;
+        l) LIMIT_MAXIMUM_TIME=${OPTARG};;
     esac
 done
 
@@ -25,4 +26,4 @@ TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
 
 [ ! -d "/code/videos/${SLUG}" ] && mkdir -p "/code/videos/${SLUG}"
 chown -R recorder:recorder "/code/videos/${SLUG}"
-nice -n 19 ffmpeg -loglevel error -hide_banner -nostats -i ${URL} -s ${RESULUTION}  -c:a copy -c:v copy /code/videos/${SLUG}/${SLUG}-${TIMESTAMP}.mp4
+nice -n 19 ffmpeg -loglevel error -hide_banner -nostats -i ${URL} -s ${RESULUTION}  -c:a copy -c:v copy -t ${LIMIT_MAXIMUM_TIME} /code/videos/${SLUG}/${SLUG}-${TIMESTAMP}.mp4

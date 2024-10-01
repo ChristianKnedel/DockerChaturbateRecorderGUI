@@ -12,9 +12,10 @@ services:
       TZ: "Europe/Berlin"
       LIMIT_MAXIMUM_FOLDER_GB: 20 #or "0" to disable this limit
       LIMIT_MAXIMUM_DOWNLOADS: 10 #or "0" to disable this limit
+      LIMIT_MAXIMUM_TIME: "01:00:00" # save channel every 30 minutes with "00:30:00"
       COMMAND_ADAPTER: 'ShellAdapter'
       CONTAINER_PREFFIX: 'cr_'
-      RECORDER_IMAGE: 'chatrubate-recorder'
+      RECORDER_IMAGE: 'chaturbate-recorder'
       USER_ID: 0
       USER_GID: 0
     volumes:
